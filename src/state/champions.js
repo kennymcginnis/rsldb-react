@@ -2,7 +2,7 @@ import axios from 'axios'
 import { atom, useRecoilState } from 'recoil'
 import useApp from './app'
 
-const championsState = atom({
+export const championsState = atom({
   key: 'champions',
   default: {
     champions: [],
@@ -14,6 +14,7 @@ const championsState = atom({
 const useChampions = () => {
   const app = useApp()
   const [localChampionState, setChampionState] = useRecoilState(championsState)
+
   const reducers = {
     setChampionState,
     createMapByKey: (array, key) => array.reduce((agg, obj) => ((agg[obj[key]] = obj), agg), {}),
@@ -41,27 +42,27 @@ const useChampions = () => {
     },
     getChampion: uid => localChampionState.championNameMap[uid],
   }
-  const effects = {
-    fetchChampions: () =>
-      axios
-        .get('/champions')
-        .then(res => reducers.setChampions(res.data))
-        .catch(err => app.reducers.setErrors('fetchChampions', err)),
-    createChampion: newChampion =>
-      axios
-        .post(`/champion`, newChampion)
-        .then(res => reducers.setChampion(res.data))
-        .catch(err => app.reducers.setErrors('createChampion', err)),
-    updateChampion: newChampion =>
-      axios
-        .post('/champion', newChampion)
-        .then(res => reducers.setChampion(res.data))
-        .catch(err => app.reducers.setErrors('updateChampion', err)),
-  }
 
   return {
+    state: localChampionState,
     reducers,
-    effects,
+    effects: {
+      fetchChampions: () =>
+        axios
+          .get('/champions')
+          .then(res => reducers.setChampions(res.data))
+          .catch(err => app.reducers.setErrors('fetchChampions', err)),
+      createChampion: newChampion =>
+        axios
+          .post(`/champion`, newChampion)
+          .then(res => reducers.setChampion(res.data))
+          .catch(err => app.reducers.setErrors('createChampion', err)),
+      updateChampion: newChampion =>
+        axios
+          .post('/champion', newChampion)
+          .then(res => reducers.setChampion(res.data))
+          .catch(err => app.reducers.setErrors('updateChampion', err)),
+    },
   }
 }
 

@@ -1,16 +1,15 @@
 import React from 'react'
-
+import { Field, Form, FormSpy } from 'react-final-form'
 import '../components/bootstrap'
+import Typography from '../components/Typography'
 
 import FormButton from '../form/FormButton'
 import FormFeedback from '../form/FormFeedback'
 import RFTextField from '../form/RFTextField'
-import { email, required } from '../form/validation'
+import { validateEmail, required } from '../form/validation'
 
 import Grid from '@material-ui/core/Grid'
 import Link from '@material-ui/core/Link'
-import Typography from '../components/Typography'
-import { Field, Form, FormSpy } from 'react-final-form'
 import { makeStyles } from '@material-ui/core/styles'
 
 const SignUp = () => {
@@ -19,53 +18,33 @@ const SignUp = () => {
 
   const validate = values => {
     const errors = required(['firstName', 'lastName', 'email', 'password'], values)
-    if (!errors.email) {
-      const emailError = email(values.email, values)
-      if (emailError) errors.email = emailError
-    }
-    return errors
+    return validateEmail(errors, values)
   }
 
   const handleSubmit = () => setSent(true)
 
   return (
-    <>
-      <>
-        <Typography variant="h3" gutterBottom marked="center" align="center">
-          Sign Up
-        </Typography>
-        <Typography variant="body2" align="center">
-          <Link to="/login" underline="always">
-            Already have an account?
-          </Link>
-        </Typography>
-      </>
+    <Grid item xs={12} sm={6} style={{ margin: 'auto' }}>
+      <Typography variant="h3" gutterBottom marked="center" align="center">
+        Sign Up
+      </Typography>
+      <Typography variant="body2" align="center">
+        <Link to="/login" underline="always">
+          Already have an account?
+        </Link>
+      </Typography>
       <Form onSubmit={handleSubmit} subscription={{ submitting: true }} validate={validate}>
-        {({ handleSubmit2, submitting }) => (
-          <form onSubmit={handleSubmit2} className={classes.form} noValidate>
-            <Grid container spacing={2}>
-              <Grid item xs={12} sm={6}>
-                <Field
-                  autoFocus
-                  component={RFTextField}
-                  autoComplete="fname"
-                  fullWidth
-                  label="First name"
-                  name="firstName"
-                  required
-                />
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <Field
-                  component={RFTextField}
-                  autoComplete="lname"
-                  fullWidth
-                  label="Last name"
-                  name="lastName"
-                  required
-                />
-              </Grid>
-            </Grid>
+        {({ onSubmit, submitting }) => (
+          <form {...{ onSubmit }} className={classes.form} noValidate>
+            <Field
+              autoFocus
+              component={RFTextField}
+              autoComplete="handle"
+              fullWidth
+              label="Handle"
+              name="handle"
+              required
+            />
             <Field
               autoComplete="email"
               component={RFTextField}
@@ -107,7 +86,7 @@ const SignUp = () => {
           </form>
         )}
       </Form>
-    </>
+    </Grid>
   )
 }
 

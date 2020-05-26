@@ -7,11 +7,12 @@ import Toolbar from '@material-ui/core/Toolbar'
 import Button from '@material-ui/core/Button'
 // Icons
 import HomeIcon from '@material-ui/icons/Home'
-import { useRecoilValue } from 'recoil'
-import { authState } from '../../state/auth'
+// State
+import useAuth from '../../state/auth'
 
 const Navbar = () => {
-  const { authenticated } = useRecoilValue(authState)
+  const auth = useAuth()
+  const { authenticated } = auth.state
   return (
     <AppBar>
       <Toolbar className="nav-container">

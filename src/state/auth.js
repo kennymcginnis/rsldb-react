@@ -18,6 +18,7 @@ const useAuth = () => {
   const [localAuthState, setAuthState] = useRecoilState(authState)
 
   const reducers = {
+    setAuthState,
     setAuthenticated: () =>
       setAuthState({
         ...localAuthState,
@@ -49,30 +50,30 @@ const useAuth = () => {
       axios.defaults.headers.common['Authorization'] = FBIdToken
     },
   }
-  const effects = {
-    login: userData =>
-      axios
-        .post('/login', userData)
-        .then(res => {
-          reducers.setAuthorizationHeader(res.data.token)
-          user.effects.getUsersChampions()
-        })
-        .catch(err => app.reducers.setErrors('login', err)),
-    signup: newUserData =>
-      axios
-        .post('/signup', newUserData)
-        .then(res => reducers.setAuthorizationHeader(res.data.token))
-        .catch(err => app.reducers.setErrors('signup', err)),
-    logout: () => {
-      localStorage.removeItem('FBIdToken')
-      delete axios.defaults.headers.common['Authorization']
-      reducers.setUnauthenticated()
-    },
-  }
 
   return {
+    state: localAuthState,
     reducers,
-    effects,
+    effects: {
+      login: userData =>
+        axios
+          .post('/login', userData)
+          .then(res => {
+            reducers.setAuthorizationHeader(res.data.token)
+            user.effects.getUsersChampions()
+          })
+          .catch(err => app.reducers.setErrors('login', err)),
+      signup: newUserData =>
+        axios
+          .post('/signup', newUserData)
+          .then(res => reducers.setAuthorizationHeader(res.data.token))
+          .catch(err => app.reducers.setErrors('signup', err)),
+      logout: () => {
+        localStorage.removeItem('FBIdToken')
+        delete axios.defaults.headers.common['Authorization']
+        reducers.setUnauthenticated()
+      },
+    },
   }
 }
 

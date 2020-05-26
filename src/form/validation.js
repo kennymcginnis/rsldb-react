@@ -1,19 +1,20 @@
 import isEmail from 'validator/lib/isEmail'
 
-export function email(value) {
-  return value && !isEmail(value.trim()) ? 'Invalid email' : null
+export const validateEmail = (errors, { email }) => {
+  if (!errors.email) {
+    const emailError = email && !isEmail(email.trim()) ? 'Invalid email' : null
+    if (emailError) errors.email = emailError
+  }
+  return errors
 }
 
-function isDirty(value) {
-  return value || value === 0
-}
+const isDirty = value => value || value === 0
 
-export function required(requiredFields, values) {
-  return requiredFields.reduce(
+export const required = (requiredFields, values) =>
+  requiredFields.reduce(
     (fields, field) => ({
       ...fields,
       ...(isDirty(values[field]) ? undefined : { [field]: 'Required' }),
     }),
     {},
   )
-}

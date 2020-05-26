@@ -1,49 +1,48 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Field, Form, FormSpy } from 'react-final-form'
 import { makeStyles } from '@material-ui/core/styles'
 import Typography from '../components/Typography'
-import { email, required } from '../form/validation'
+import { validateEmail, required } from '../form/validation'
 import RFTextField from '../form/RFTextField'
 import FormButton from '../form/FormButton'
 import FormFeedback from '../form/FormFeedback'
 import { Link } from 'react-router-dom'
 
+import useAuth from '../state/auth'
+import { appState } from '../state/app'
+import { useRecoilValue } from 'recoil'
+import Grid from '@material-ui/core/Grid'
+
 const SignIn = () => {
+  const auth = useAuth()
   const classes = useStyles()
-  const [sent, setSent] = React.useState(false)
 
   const validate = values => {
     const errors = required(['email', 'password'], values)
-    if (!errors.email) {
-      const emailError = email(values.email, values)
-      if (emailError) errors.email = emailError
-    }
-    return errors
+    return validateEmail(errors, values)
   }
 
-  const handleSubmit = () => setSent(true)
+  const onSubmit = ({ email, password }) => auth.effects.login({ email, password })
 
   return (
-    <>
-      <>
-        <Typography variant="h3" gutterBottom marked="center" align="center">
-          Sign In
-        </Typography>
-        <Typography variant="body2" align="center">
-          {'Not a member yet? '}
-          <Link to="/signup" align="center" underline="always">
-            Sign Up here
-          </Link>
-        </Typography>
-      </>
-      <Form onSubmit={handleSubmit} subscription={{ submitting: true }} validate={validate}>
-        {({ handleSubmit2, submitting }) => (
-          <form onSubmit={handleSubmit2} className={classes.form} noValidate>
+    <Grid item xs={12} sm={6} style={{ margin: 'auto' }}>
+      <Typography variant="h3" gutterBottom marked="center" align="center">
+        Sign In
+      </Typography>
+      <Typography variant="body2" align="center">
+        {'Not a member yet? '}
+        <Link to="/signup" align="center" underline="always">
+          Sign Up here!
+        </Link>
+      </Typography>
+      <Form onSubmit={onSubmit} subscription={{ submitting: true }} validate={validate}>
+        {({ handleSubmit, submitting }) => (
+          <form onSubmit={handleSubmit} className={classes.form} noValidate>
             <Field
               autoComplete="email"
               autoFocus
               component={RFTextField}
-              disabled={submitting || sent}
+              disabled={submitting}
               fullWidth
               label="Email"
               margin="normal"
@@ -55,7 +54,7 @@ const SignIn = () => {
               fullWidth
               size="large"
               component={RFTextField}
-              disabled={submitting || sent}
+              disabled={submitting}
               required
               name="password"
               autoComplete="current-password"
@@ -74,12 +73,12 @@ const SignIn = () => {
             </FormSpy>
             <FormButton
               className={classes.button}
-              disabled={submitting || sent}
+              disabled={submitting}
               size="large"
               color="secondary"
               fullWidth
             >
-              {submitting || sent ? 'In progress…' : 'Sign In'}
+              {submitting ? 'In progress…' : 'Sign In'}
             </FormButton>
           </form>
         )}
@@ -89,7 +88,7 @@ const SignIn = () => {
           Forgot password?
         </Link>
       </Typography>
-    </>
+    </Grid>
   )
 }
 

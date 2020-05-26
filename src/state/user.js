@@ -6,15 +6,15 @@ export const userState = atom({
   key: 'user',
   default: {
     champions: [],
-    championsMap: [],
   },
 })
 
 const useUser = () => {
+  const app = useApp()
   const [localUserState, setUserState] = useRecoilState(userState)
 
-  const app = useApp()
   const reducers = {
+    setUserState,
     setUser: user => ({ ...localUserState, user }),
     setUsersChampions: champions => {
       const championMap = champions.reduce((agg, obj) => ((agg[obj.uid] = obj), agg), {})
@@ -47,27 +47,33 @@ const useUser = () => {
       setUserState({ ...localUserState, champions, championMap })
     },
   }
-  const effects = {
-    getUsersChampions: () =>
-      axios
-        .get('/users/champions')
-        .then(res => reducers.setUsersChampions(res.data))
-        .catch(err => app.reducers.setErrors('fetchUsersChampions', err)),
-    pullChampion: championId =>
-      axios
-        .get(`/users/champions/${championId}`)
-        .then(res => reducers.pullChampion(res.data))
-        .catch(err => app.reducers.setErrors('pullChampion', err)),
-    updateUserChampions: (uids, action) =>
-      axios
-        .put(`/users/champions/${action}`, uids)
-        .then(res => reducers.updateUserChampions(res.data, action))
-        .catch(err => app.reducers.setErrors('updateUserChampions', err)),
-  }
 
   return {
+    state: localUserState,
     reducers,
-    effects,
+    effects: {
+      getUsersChampions: () => {
+        app.reducers.setLoading('getUsersChampions')
+        return axios
+          .get('/users/champions')
+          .then(res => reducers.setUsersChampions(res.data))
+          .catch(err => app.reducers.setErrors('fetchUsersChampions', err))
+      },
+      pullChampion: championId => {
+        app.reducers.setLoading('pullChampion')
+        return axios
+          .get(`/users/champions/${championId}`)
+          .then(res => reducers.pullChampion(res.data))
+          .catch(err => app.reducers.setErrors('pullChampion', err))
+      },
+      updateUserChampions: (uids, action) => {
+        app.reducers.setLoading('updateUserChampions')
+        return axios
+          .put(`/users/champions/${action}`, uids)
+          .then(res => reducers.updateUserChampions(res.data, action))
+          .catch(err => app.reducers.setErrors('updateUserChampions', err))
+      },
+    },
   }
 }
 

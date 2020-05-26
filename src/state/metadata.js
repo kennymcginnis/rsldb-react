@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { atom, useSetRecoilState } from 'recoil'
+import { atom, useRecoilState } from 'recoil'
 import app from './app'
 
 const metadataState = atom({
@@ -11,7 +11,7 @@ const metadataState = atom({
 })
 
 const useMetadata = () => {
-  const setMetadataState = useSetRecoilState(metadataState)
+  const [localMetadataState, setMetadataState] = useRecoilState(metadataState)
 
   const reducers = {
     setMetadataState,
@@ -22,17 +22,17 @@ const useMetadata = () => {
       return newMetadata
     },
   }
-  const effects = {
-    fetchMetadata: () =>
-      axios
-        .get('/metadata')
-        .then(res => reducers.setMetadata(res.data))
-        .catch(err => app.reducers.setErrors('loading', err)),
-  }
 
   return {
+    state: localMetadataState,
     reducers,
-    effects,
+    effects: {
+      fetchMetadata: () =>
+        axios
+          .get('/metadata')
+          .then(res => reducers.setMetadata(res.data))
+          .catch(err => app.reducers.setErrors('loading', err)),
+    },
   }
 }
 

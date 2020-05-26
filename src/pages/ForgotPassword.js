@@ -3,7 +3,7 @@ import React from 'react'
 import { Field, Form, FormSpy } from 'react-final-form'
 import { makeStyles } from '@material-ui/core/styles'
 import Typography from '../components/Typography'
-import { email, required } from '../form/validation'
+import { validateEmail, required } from '../form/validation'
 import RFTextField from '../form/RFTextField'
 import FormButton from '../form/FormButton'
 import FormFeedback from '../form/FormFeedback'
@@ -27,11 +27,7 @@ function ForgotPassword() {
 
   const validate = values => {
     const errors = required(['email', 'password'], values)
-    if (!errors.email) {
-      const emailError = email(values.email, values)
-      if (emailError) errors.email = emailError
-    }
-    return errors
+    return validateEmail(errors, values)
   }
 
   const handleSubmit = () => {
