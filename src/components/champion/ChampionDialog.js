@@ -11,7 +11,6 @@ import Grid from '@material-ui/core/Grid'
 import Typography from '@material-ui/core/Typography'
 import UnfoldMore from '@material-ui/icons/UnfoldMore'
 // State
-import app from '../../state/app'
 import champions from '../../state/champions'
 
 const ChampionDialog = ({ championId, userHandle, openDialog }) => {
@@ -38,7 +37,6 @@ const ChampionDialog = ({ championId, userHandle, openDialog }) => {
   const handleClose = () => {
     window.history.pushState(null, null, this.state.oldPath)
     this.setState({ open: false })
-    app.reducers.clearErrors()
   }
 
   const dialogMarkup = (

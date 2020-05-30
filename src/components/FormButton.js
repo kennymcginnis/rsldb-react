@@ -1,9 +1,9 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import defer from './defer'
-import Button from '../components/Button'
+import Button from './Button'
+import defer from './form/Defer'
 
-function FormButton(props) {
+const FormButton = props => {
   const { disabled, mounted, ...others } = props
   return <Button disabled={!mounted || disabled} type="submit" variant="contained" {...others} />
 }

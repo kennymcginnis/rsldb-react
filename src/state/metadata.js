@@ -31,7 +31,7 @@ const useMetadata = () => {
         axios
           .get('/metadata')
           .then(res => reducers.setMetadata(res.data))
-          .catch(err => app.reducers.setErrors('loading', err)),
+          .catch(err => console.error('loading', err)),
     },
   }
 }

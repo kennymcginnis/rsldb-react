@@ -1,16 +1,14 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { Field, Form, FormSpy } from 'react-final-form'
 import { makeStyles } from '@material-ui/core/styles'
 import Typography from '../components/Typography'
-import { validateEmail, required } from '../form/validation'
-import RFTextField from '../form/RFTextField'
-import FormButton from '../form/FormButton'
-import FormFeedback from '../form/FormFeedback'
+import { validateEmail, required } from '../components/form/validation'
+import RFTextField from '../components/form/RFTextField'
+import FormFeedback from '../components/form/FormFeedback'
+import FormButton from '../components/FormButton'
 import { Link } from 'react-router-dom'
 
 import useAuth from '../state/auth'
-import { appState } from '../state/app'
-import { useRecoilValue } from 'recoil'
 import Grid from '@material-ui/core/Grid'
 
 const SignIn = () => {
@@ -35,7 +33,7 @@ const SignIn = () => {
           Sign Up here!
         </Link>
       </Typography>
-      <Form onSubmit={onSubmit} subscription={{ submitting: true }} validate={validate}>
+      <Form {...{ onSubmit, validate }} subscription={{ submitting: true }}>
         {({ handleSubmit, submitting }) => (
           <form onSubmit={handleSubmit} className={classes.form} noValidate>
             <Field
@@ -77,6 +75,7 @@ const SignIn = () => {
               size="large"
               color="secondary"
               fullWidth
+              style={{ width: '50%', left: '25%' }}
             >
               {submitting ? 'In progress…' : 'Sign In'}
             </FormButton>

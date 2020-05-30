@@ -1,6 +1,6 @@
 import axios from 'axios'
 import { atom, useRecoilState } from 'recoil'
-import useApp from './app'
+import { championData } from '../data/champions'
 
 export const championsState = atom({
   key: 'champions',
@@ -12,12 +12,11 @@ export const championsState = atom({
 })
 
 const useChampions = () => {
-  const app = useApp()
   const [localChampionState, setChampionState] = useRecoilState(championsState)
 
   const reducers = {
     setChampionState,
-    createMapByKey: (array, key) => array.reduce((agg, obj) => ((agg[obj[key]] = obj), agg), {}),
+    createMapByKey: (array, key) => array.reduce((agg, obj) => ((agg[obj[key]] = obj), agg), {}), // eslint-disable-line no-sequences
     setChampion: champion => {
       const { champions, championMap, championNameMap } = localChampionState
       const newChampions = champions.filter(champ => champ.uid !== champion.uid).push(champion)
@@ -40,28 +39,40 @@ const useChampions = () => {
       console.dir({ newChampionState })
       return newChampionState
     },
-    getChampion: uid => localChampionState.championNameMap[uid],
+    getChampion: uid => {
+      return localChampionState.championMap[uid]
+    },
   }
 
   return {
     state: localChampionState,
     reducers,
     effects: {
-      fetchChampions: () =>
-        axios
-          .get('/champions')
-          .then(res => reducers.setChampions(res.data))
-          .catch(err => app.reducers.setErrors('fetchChampions', err)),
-      createChampion: newChampion =>
-        axios
+      fetchChampion: (key, { uid }) => {
+        return Promise.resolve()
+          .then(() => reducers.getChampion(uid))
+          .catch(err => console.error('fetchChampion', err))
+      },
+      fetchChampions: () => {
+        // axios
+        //   .get('/champions')
+        return Promise.resolve()
+          .then(() => ({ data: championData }))
+          .then(({ data }) => reducers.setChampions(data))
+          .catch(err => console.error('fetchChampions', err))
+      },
+      createChampion: newChampion => {
+        return axios
           .post(`/champion`, newChampion)
-          .then(res => reducers.setChampion(res.data))
-          .catch(err => app.reducers.setErrors('createChampion', err)),
-      updateChampion: newChampion =>
-        axios
+          .then(({ data }) => reducers.setChampion(data))
+          .catch(err => console.error('createChampion', err))
+      },
+      updateChampion: newChampion => {
+        return axios
           .post('/champion', newChampion)
-          .then(res => reducers.setChampion(res.data))
-          .catch(err => app.reducers.setErrors('updateChampion', err)),
+          .then(({ data }) => reducers.setChampion(data))
+          .catch(err => console.error('updateChampion', err))
+      },
     },
   }
 }

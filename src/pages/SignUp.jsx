@@ -3,14 +3,14 @@ import { Field, Form, FormSpy } from 'react-final-form'
 import '../components/bootstrap'
 import Typography from '../components/Typography'
 
-import FormButton from '../form/FormButton'
-import FormFeedback from '../form/FormFeedback'
-import RFTextField from '../form/RFTextField'
-import { validateEmail, required } from '../form/validation'
+import FormButton from '../components/FormButton'
+import FormFeedback from '../components/form/FormFeedback'
+import RFTextField from '../components/form/RFTextField'
+import { validateEmail, required } from '../components/form/validation'
 
+import { makeStyles } from '@material-ui/core/styles'
 import Grid from '@material-ui/core/Grid'
 import Link from '@material-ui/core/Link'
-import { makeStyles } from '@material-ui/core/styles'
 
 const SignUp = () => {
   const classes = useStyles()
@@ -21,7 +21,7 @@ const SignUp = () => {
     return validateEmail(errors, values)
   }
 
-  const handleSubmit = () => setSent(true)
+  const onSubmit = () => setSent(true)
 
   return (
     <Grid item xs={12} sm={6} style={{ margin: 'auto' }}>
@@ -33,7 +33,7 @@ const SignUp = () => {
           Already have an account?
         </Link>
       </Typography>
-      <Form onSubmit={handleSubmit} subscription={{ submitting: true }} validate={validate}>
+      <Form {...{ onSubmit, validate }} subscription={{ submitting: true }}>
         {({ onSubmit, submitting }) => (
           <form {...{ onSubmit }} className={classes.form} noValidate>
             <Field
@@ -80,6 +80,7 @@ const SignUp = () => {
               disabled={submitting || sent}
               color="secondary"
               fullWidth
+              style={{ width: '50%', left: '25%' }}
             >
               {submitting || sent ? 'In progress…' : 'Sign Up'}
             </FormButton>

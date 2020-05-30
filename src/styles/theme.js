@@ -1,7 +1,24 @@
 import { createMuiTheme } from '@material-ui/core/styles'
 import { green, grey, red } from '@material-ui/core/colors'
+import Background from '../images/raid-header.jpg'
 
 const rawTheme = createMuiTheme({
+  '@global': {
+    body: {
+      backgroundImage: `url(${Background})`,
+      backgroundRepeat: 'no-repeat',
+      backgroundPosition: 'center center',
+      backgroundSize: 'cover',
+      backgroundAttachment: 'fixed',
+      height: '100%',
+    },
+    html: {
+      height: '100%',
+    },
+    '#componentWithId': {
+      height: '100%',
+    },
+  },
   palette: {
     primary: {
       light: '#69696a',

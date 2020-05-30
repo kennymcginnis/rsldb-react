@@ -21,6 +21,7 @@
     "react": "0.0.0-experimental-5faf377df",
     "react-dom": "0.0.0-experimental-5faf377df",
     "react-final-form": "^6.4.0",
+    "react-query": "^1.5.3",
     "react-router-dom": "^5.2.0",
     "react-scripts": "^3.4.1",
     "recoil": "0.0.7",
