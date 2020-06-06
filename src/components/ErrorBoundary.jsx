@@ -1,6 +1,6 @@
 import React from 'react'
-
-import Button from './Button'
+// Components
+import Button from 'components/Button'
 
 export default class ErrorBoundary extends React.Component {
   state = { error: null }

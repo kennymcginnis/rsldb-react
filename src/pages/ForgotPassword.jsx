@@ -1,28 +1,17 @@
-import '../components/bootstrap'
 import React from 'react'
 import { Field, Form, FormSpy } from 'react-final-form'
+// MUI
 import { makeStyles } from '@material-ui/core/styles'
-import Typography from '../components/Typography'
-import { validateEmail, required } from '../components/form/validation'
-import RFTextField from '../components/form/RFTextField'
-import FormFeedback from '../components/form/FormFeedback'
 import Grid from '@material-ui/core/Grid'
-import FormButton from '../components/FormButton'
+// Components
+import 'components/bootstrap'
+import { validateEmail, required } from 'components/form/validation'
+import FormButton from 'components/form/FormButton'
+import FormFeedback from 'components/form/FormFeedback'
+import RFTextField from 'components/form/RFTextField'
+import Typography from 'components/Typography'
 
-const useStyles = makeStyles(theme => ({
-  form: {
-    marginTop: theme.spacing(6),
-  },
-  button: {
-    marginTop: theme.spacing(3),
-    marginBottom: theme.spacing(2),
-  },
-  feedback: {
-    marginTop: theme.spacing(2),
-  },
-}))
-
-function ForgotPassword() {
+const ForgotPassword = () => {
   const classes = useStyles()
   const [sent, setSent] = React.useState(false)
 
@@ -31,9 +20,7 @@ function ForgotPassword() {
     return validateEmail(errors, values)
   }
 
-  const onSubmit = () => {
-    setSent(true)
-  }
+  const onSubmit = () => setSent(true)
 
   return (
     <Grid item xs={12} sm={6} style={{ margin: 'auto' }}>
@@ -82,5 +69,18 @@ function ForgotPassword() {
     </Grid>
   )
 }
+
+const useStyles = makeStyles(theme => ({
+  form: {
+    marginTop: theme.spacing(6),
+  },
+  button: {
+    marginTop: theme.spacing(3),
+    marginBottom: theme.spacing(2),
+  },
+  feedback: {
+    marginTop: theme.spacing(2),
+  },
+}))
 
 export default ForgotPassword

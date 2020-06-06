@@ -1,15 +1,17 @@
 import React from 'react'
-import { Field, Form, FormSpy } from 'react-final-form'
-import { makeStyles } from '@material-ui/core/styles'
-import Typography from '../components/Typography'
-import { validateEmail, required } from '../components/form/validation'
-import RFTextField from '../components/form/RFTextField'
-import FormFeedback from '../components/form/FormFeedback'
-import FormButton from '../components/FormButton'
 import { Link } from 'react-router-dom'
-
-import useAuth from '../state/auth'
+import { Field, Form, FormSpy } from 'react-final-form'
+// MUI
+import { makeStyles } from '@material-ui/core/styles'
 import Grid from '@material-ui/core/Grid'
+// Components
+import { validateEmail, required } from 'components/form/validation'
+import FormButton from 'components/form/FormButton'
+import FormFeedback from 'components/form/FormFeedback'
+import RFTextField from 'components/form/RFTextField'
+import Typography from 'components/Typography'
+// State
+import useAuth from 'state/auth'
 
 const SignIn = () => {
   const auth = useAuth()

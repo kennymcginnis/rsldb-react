@@ -1,13 +1,6 @@
 import axios from 'axios'
 import { atom, useRecoilState } from 'recoil'
 
-export const userState = atom({
-  key: 'user',
-  default: {
-    champions: [],
-  },
-})
-
 const useUser = () => {
   const [localUserState, setUserState] = useRecoilState(userState)
 
@@ -49,7 +42,6 @@ const useUser = () => {
   }
 
   return {
-    state: localUserState,
     reducers,
     effects: {
       getUsersChampions: () => {

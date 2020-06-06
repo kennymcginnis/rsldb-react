@@ -1,8 +1,9 @@
-import { createMuiTheme } from '@material-ui/core/styles'
+import { unstable_createMuiStrictModeTheme } from '@material-ui/core/styles'
 import { green, grey, red } from '@material-ui/core/colors'
-import Background from '../images/raid-header.jpg'
+// import Background from 'public/raid-header.jpg'
 
-const rawTheme = createMuiTheme({
+const rawTheme = unstable_createMuiStrictModeTheme({
+  /*
   '@global': {
     body: {
       backgroundImage: `url(${Background})`,
@@ -19,6 +20,7 @@ const rawTheme = createMuiTheme({
       height: '100%',
     },
   },
+  */
   palette: {
     primary: {
       light: '#69696a',

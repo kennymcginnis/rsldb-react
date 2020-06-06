@@ -1,7 +1,8 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import Button from './Button'
-import defer from './form/Defer'
+// Components
+import Button from 'components/Button'
+import Defer from 'components/form/Defer'
 
 const FormButton = props => {
   const { disabled, mounted, ...others } = props
@@ -13,4 +14,4 @@ FormButton.propTypes = {
   mounted: PropTypes.bool,
 }
 
-export default defer(FormButton)
+export default Defer(FormButton)

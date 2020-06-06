@@ -1,51 +1,48 @@
 import axios from 'axios'
-import { atom, useRecoilState } from 'recoil'
-import { championData } from '../data/champions'
-
-export const championsState = atom({
-  key: 'champions',
-  default: {
-    champions: [],
-    championMap: {},
-    championNameMap: {},
-  },
-})
+import { useRecoilState, useRecoilValue } from 'recoil'
+// State
+import { championsState, metadataState } from 'state/atoms'
+import { championData } from 'data/champions'
+import { createMapByKey } from 'util/functions'
 
 const useChampions = () => {
   const [localChampionState, setChampionState] = useRecoilState(championsState)
 
+  const localMetadataState = useRecoilValue(metadataState)
+  const { metadataMap } = localMetadataState
+
   const reducers = {
-    setChampionState,
-    createMapByKey: (array, key) => array.reduce((agg, obj) => ((agg[obj[key]] = obj), agg), {}), // eslint-disable-line no-sequences
-    setChampion: champion => {
-      const { champions, championMap, championNameMap } = localChampionState
+    enrichChampion: champion => {
+      const output = { ...champion }
+      if (metadataMap && champion.attributes) {
+        Object.keys(champion.attributes).forEach(key => {
+          const uid = champion.attributes[key]
+          const element = metadataMap[uid]
+          if (element) output.attributes[key] = element
+        })
+      }
+      return output
+    },
+    updateChampion: input => {
+      const champion = reducers.enrichChampion(input)
+      const { champions, championMap } = localChampionState
       const newChampions = champions.filter(champ => champ.uid !== champion.uid).push(champion)
       championMap[champion.uid] = champion
-      championNameMap[champion.name] = champion
-      const newChampionState = {
-        ...localChampionState,
-        champions: newChampions,
-        championMap,
-        championNameMap,
-      }
+      const newChampionState = { champions: newChampions, championMap }
       setChampionState(newChampionState)
       return newChampionState
     },
-    setChampions: champions => {
-      const championMap = reducers.createMapByKey(champions, 'uid')
-      const championNameMap = reducers.createMapByKey(champions, 'name')
-      const newChampionState = { ...localChampionState, champions, championMap, championNameMap }
+    setChampions: input => {
+      const champions = input.map(champion => reducers.enrichChampion(champion))
+      const championMap = createMapByKey(champions, 'uid')
+      const newChampionState = { champions, championMap }
       setChampionState(newChampionState)
-      console.dir({ newChampionState })
       return newChampionState
     },
-    getChampion: uid => {
-      return localChampionState.championMap[uid]
-    },
+    getChampion: uid => localChampionState.championMap[uid],
   }
 
   return {
-    state: localChampionState,
     reducers,
     effects: {
       fetchChampion: (key, { uid }) => {
@@ -54,23 +51,25 @@ const useChampions = () => {
           .catch(err => console.error('fetchChampion', err))
       },
       fetchChampions: () => {
-        // axios
-        //   .get('/champions')
-        return Promise.resolve()
-          .then(() => ({ data: championData }))
-          .then(({ data }) => reducers.setChampions(data))
-          .catch(err => console.error('fetchChampions', err))
+        return (
+          // axios
+          //   .get('/champions')
+          Promise.resolve()
+            .then(() => ({ data: championData }))
+            .then(({ data }) => reducers.setChampions(data))
+            .catch(err => console.error('fetchChampions', err))
+        )
       },
       createChampion: newChampion => {
         return axios
           .post(`/champion`, newChampion)
-          .then(({ data }) => reducers.setChampion(data))
+          .then(({ data }) => reducers.updateChampion(data))
           .catch(err => console.error('createChampion', err))
       },
       updateChampion: newChampion => {
         return axios
           .post('/champion', newChampion)
-          .then(({ data }) => reducers.setChampion(data))
+          .then(({ data }) => reducers.updateChampion(data))
           .catch(err => console.error('updateChampion', err))
       },
     },

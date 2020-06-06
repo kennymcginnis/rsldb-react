@@ -1,15 +1,16 @@
-import React, { Component, Fragment } from 'react'
+import React from 'react'
 import PropTypes from 'prop-types'
-import MyButton from '../TooltipIconButton'
-// MUI Stuff
+// MUI
 import Button from '@material-ui/core/Button'
-import TextField from '@material-ui/core/TextField'
 import Dialog from '@material-ui/core/Dialog'
 import DialogActions from '@material-ui/core/DialogActions'
 import DialogContent from '@material-ui/core/DialogContent'
 import DialogTitle from '@material-ui/core/DialogTitle'
+import TextField from '@material-ui/core/TextField'
 // Icons
 import EditIcon from '@material-ui/icons/Edit'
+// Components
+import MyButton from 'components/TooltipIconButton'
 
 const EditDetails = () => {
   const state = {
@@ -53,7 +54,7 @@ const EditDetails = () => {
   }
   const { classes } = this.props
   return (
-    <Fragment>
+    <>
       <MyButton tip="Edit Details" onClick={this.handleOpen} btnClassName={classes.button}>
         <EditIcon color="primary" />
       </MyButton>
@@ -104,7 +105,7 @@ const EditDetails = () => {
           </Button>
         </DialogActions>
       </Dialog>
-    </Fragment>
+    </>
   )
 }
 

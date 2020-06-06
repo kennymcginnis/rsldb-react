@@ -1,43 +1,34 @@
 import React from 'react'
-import { useQuery } from 'react-query'
-// MUI Stuff
+// MUI
 import { makeStyles } from '@material-ui/core/styles'
 import Card from '@material-ui/core/Card'
 import CardContent from '@material-ui/core/CardContent'
 import CardHeader from '@material-ui/core/CardHeader'
-// import CardMedia from '@material-ui/core/CardMedia'
 import Typography from '@material-ui/core/Typography'
 // Components
-import Button from '../Button'
-import Spinner from '../Spinner'
+import Button from 'components/Button'
 // State
-import useChampions from '../../state/champions'
+import { useRecoilValue } from 'recoil'
+import { championSelector } from 'state/atoms'
 
 const Champion = ({ activeChampion, setActiveChampion }) => {
   const classes = useStyles()
-  const champ = useChampions()
-  const { data, isFetching } = useQuery(
-    ['champion', { uid: activeChampion }],
-    champ.effects.fetchChampion,
-  )
-
-  const { name, attributes } = data
+  const champion = useRecoilValue(championSelector(activeChampion))
   return (
     <>
-      {isFetching && <Spinner />}
       <Button onClick={() => setActiveChampion(null)}>Back</Button>
-      {data && (
+      {champion && (
         <Card className={classes.card}>
-          <CardHeader>{data.name}</CardHeader>
+          <CardHeader>{champion.name}</CardHeader>
           {/*<CardMedia image={userImage} title="Profile image" className={classes.image} />*/}
           <CardContent className={classes.content}>
             <Typography variant="h5" color="primary">
-              {name}
+              {champion.name}
             </Typography>
             <ul>
-              {Object.keys(attributes).map(key => (
+              {Object.keys(champion.attributes).map(key => (
                 <li>
-                  {key}:{attributes[key]}
+                  {key}:{champion.attributes[key]}
                 </li>
               ))}
             </ul>

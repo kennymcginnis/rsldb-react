@@ -809,6 +809,11 @@ exports.COMMON_RANK_ID = 'a5Hb3kKctPjvjKjonv1M'
 exports.UNCOMMON_RANK_ID = 'a8KGPwQrfqGKDPzgdJXG'
 exports.EPIC_RANK_ID = 's9nWh3XrywUKO4FmAWaf'
 
+exports.MAGIC_AFFINITY_ID = 'RYN1y624x9yL6X9bPYTY'
+exports.SPIRIT_AFFINITY_ID = 'W9v8Q3sLIuI3lqyfDh1H'
+exports.VOID_AFFINITY_ID = 'XLbuGFJc0sXMVLmAnWKD'
+exports.FORCE_AFFINITY_ID = 'dcYXs7No1NW0oIvsGoYj'
+
 exports.defaultRanks = {
   COMMON_RANK_ID: 1,
   UNCOMMON_RANK_ID: 2,

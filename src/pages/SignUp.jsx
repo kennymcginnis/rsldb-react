@@ -1,16 +1,16 @@
 import React from 'react'
 import { Field, Form, FormSpy } from 'react-final-form'
-import '../components/bootstrap'
-import Typography from '../components/Typography'
-
-import FormButton from '../components/FormButton'
-import FormFeedback from '../components/form/FormFeedback'
-import RFTextField from '../components/form/RFTextField'
-import { validateEmail, required } from '../components/form/validation'
-
+// MUI
 import { makeStyles } from '@material-ui/core/styles'
 import Grid from '@material-ui/core/Grid'
 import Link from '@material-ui/core/Link'
+// Components
+import 'components/bootstrap'
+import { required, validateEmail } from 'components/form/validation'
+import FormButton from 'components/form/FormButton'
+import FormFeedback from 'components/form/FormFeedback'
+import RFTextField from 'components/form/RFTextField'
+import Typography from 'components/Typography'
 
 const SignUp = () => {
   const classes = useStyles()

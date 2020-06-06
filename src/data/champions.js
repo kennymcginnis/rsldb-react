@@ -5085,8 +5085,8 @@ Object.assign(exports, {
     {
       uid: 'iKsNSxnxl2nmgegk8pjO',
       name: 'Admonitor',
-      image: 'https://files.ayumilove.net/games/raid_shadow_legends/champion/Admonitor.jpg',
-      avatar: 'https://files.ayumilove.net/games/raid_shadow_legends/avatar/Admonitor.png',
+      image: 'https://files.ayumilove.net/games/raid_shadow_legends/champion/Addmonitor.jpg',
+      avatar: 'https://files.ayumilove.net/games/raid_shadow_legends/avatar/Addmonitor.png',
       attributes: {
         rarity: 'a8KGPwQrfqGKDPzgdJXG',
         faction: 'I4GVXHmlzTVwFinWzfwg',

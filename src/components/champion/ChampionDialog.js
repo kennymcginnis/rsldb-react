@@ -1,8 +1,7 @@
 import React, { Component, Fragment, useEffect, useState } from 'react'
 import PropTypes from 'prop-types'
-import MyButton from '../TooltipIconButton'
+import MyButton from 'TooltipIconButton'
 import dayjs from 'dayjs'
-// MUI Stuff
 import { makeStyles } from '@material-ui/core/styles'
 import CloseIcon from '@material-ui/icons/Close'
 import Dialog from '@material-ui/core/Dialog'
@@ -10,8 +9,7 @@ import DialogContent from '@material-ui/core/DialogContent'
 import Grid from '@material-ui/core/Grid'
 import Typography from '@material-ui/core/Typography'
 import UnfoldMore from '@material-ui/icons/UnfoldMore'
-// State
-import champions from '../../state/champions'
+import champions from '.state/champions'
 
 const ChampionDialog = ({ championId, userHandle, openDialog }) => {
   const classes = useStyles()

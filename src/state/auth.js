@@ -1,29 +1,17 @@
 import axios from 'axios'
-import { atom, useRecoilState, useResetRecoilState } from 'recoil'
-import useUser from './user'
-
-export const authState = atom({
-  key: 'auth',
-  default: {
-    authenticated: false,
-    credentials: {},
-  },
-})
+import { useRecoilState, useResetRecoilState } from 'recoil'
+import { authState } from 'state/atoms'
 
 const useAuth = () => {
-  const user = useUser()
   const resetAuthState = useResetRecoilState(authState)
   const [localAuthState, setAuthState] = useRecoilState(authState)
 
   const reducers = {
-    setAuthState,
     setAuthenticated: () =>
       setAuthState({
         ...localAuthState,
         authenticated: true,
       }),
-    setUnauthenticated: () => resetAuthState(),
-    loginFailed: () => resetAuthState(),
     loginSucceeded: (state, payload) => {
       if (payload.length === 0) {
         resetAuthState()
@@ -38,7 +26,6 @@ const useAuth = () => {
         })
       }
     },
-    logout: () => resetAuthState(),
     setAuthorizationHeader: token => {
       history.push('/') // eslint-disable-line no-restricted-globals
       reducers.setAuthenticated()
@@ -49,16 +36,12 @@ const useAuth = () => {
   }
 
   return {
-    state: localAuthState,
     reducers,
     effects: {
       login: userData =>
         axios
           .post('/login', userData)
-          .then(res => {
-            reducers.setAuthorizationHeader(res.data.token)
-            user.effects.getUsersChampions()
-          })
+          .then(res => reducers.setAuthorizationHeader(res.data.token))
           .catch(err => console.error('login', err)),
       signup: newUserData =>
         axios
@@ -68,7 +51,7 @@ const useAuth = () => {
       logout: () => {
         localStorage.removeItem('FBIdToken')
         delete axios.defaults.headers.common['Authorization']
-        reducers.setUnauthenticated()
+        resetAuthState()
       },
     },
   }

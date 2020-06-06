@@ -1,8 +1,10 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import clsx from 'clsx'
+// MUI
 import { withStyles } from '@material-ui/core/styles'
-import Typography from '../Typography'
+// Components
+import Typography from 'components/Typography'
 
 const styles = theme => ({
   root: {

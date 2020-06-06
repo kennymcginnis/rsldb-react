@@ -1,36 +1,30 @@
-import axios from 'axios'
-import { atom, useRecoilState } from 'recoil'
-import app from './app'
-
-const metadataState = atom({
-  key: 'metadata',
-  default: {
-    metadata: [],
-    metadataMap: {},
-  },
-})
+// import axios from 'axios'
+import { useSetRecoilState } from 'recoil'
+import { metadataState } from 'state/atoms'
+import { metadata } from 'data/metadata'
+import { createArrayMapByKey, createMapByKey } from 'util/functions'
 
 const useMetadata = () => {
-  const [localMetadataState, setMetadataState] = useRecoilState(metadataState)
-
+  const setMetadataState = useSetRecoilState(metadataState)
   const reducers = {
-    setMetadataState,
-    setMetadata: metadata => {
-      const metadataMap = metadata.reduce((agg, obj) => ((agg[obj.uid] = obj), agg), {})
-      const newMetadata = { metadata, metadataMap }
+    setMetadataState: metadata => {
+      const metadataMap = createMapByKey(metadata, 'uid')
+      const metadataTypeMap = createArrayMapByKey(metadata, 'type')
+      const newMetadata = { metadata, metadataMap, metadataTypeMap }
       setMetadataState(newMetadata)
       return newMetadata
     },
   }
 
   return {
-    state: localMetadataState,
     reducers,
     effects: {
       fetchMetadata: () =>
-        axios
-          .get('/metadata')
-          .then(res => reducers.setMetadata(res.data))
+        Promise.resolve()
+          .then(() => ({ data: metadata }))
+          // axios
+          //   .get('/metadata')
+          .then(res => reducers.setMetadataState(res.data))
           .catch(err => console.error('loading', err)),
     },
   }
