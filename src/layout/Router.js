@@ -4,7 +4,7 @@ import { BrowserRouter, Route, Switch } from 'react-router-dom'
 import Navbar from 'layout/Navbar'
 import AuthRoute from 'layout/AuthRoute'
 // Pages
-import Champions from 'pages/Champions'
+import Champions from 'pages/ChampionsHome'
 import SignIn from 'pages/SignIn'
 import SignUp from 'pages/SignUp'
 

@@ -1,6 +1,6 @@
 import axios from 'axios'
 import { useRecoilState, useResetRecoilState } from 'recoil'
-import { authState } from 'state/atoms'
+import { authState } from 'state/atoms/index'
 
 const useAuth = () => {
   const resetAuthState = useResetRecoilState(authState)

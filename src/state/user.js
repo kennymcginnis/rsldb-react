@@ -1,5 +1,6 @@
 import axios from 'axios'
-import { atom, useRecoilState } from 'recoil'
+import { useRecoilState } from 'recoil'
+import { userState } from 'state/atoms/index'
 
 const useUser = () => {
   const [localUserState, setUserState] = useRecoilState(userState)

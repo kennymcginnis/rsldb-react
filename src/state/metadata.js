@@ -1,11 +1,11 @@
 // import axios from 'axios'
-import { useSetRecoilState } from 'recoil'
-import { metadataState } from 'state/atoms'
+import { useRecoilState } from 'recoil'
+import { metadataState } from 'state/atoms/index'
 import { metadata } from 'data/metadata'
 import { createArrayMapByKey, createMapByKey } from 'util/functions'
 
 const useMetadata = () => {
-  const setMetadataState = useSetRecoilState(metadataState)
+  const [localMetadataState, setMetadataState] = useRecoilState(metadataState)
   const reducers = {
     setMetadataState: metadata => {
       const metadataMap = createMapByKey(metadata, 'uid')
@@ -13,6 +13,11 @@ const useMetadata = () => {
       const newMetadata = { metadata, metadataMap, metadataTypeMap }
       setMetadataState(newMetadata)
       return newMetadata
+    },
+    getMetadataState: type => {
+      const { metadata, metadataTypeMap } = localMetadataState
+      const output = { metadata, ...metadataTypeMap }
+      return type ? output[type.toLowerCase()] : output
     },
   }
 

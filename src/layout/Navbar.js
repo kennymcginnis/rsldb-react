@@ -9,18 +9,19 @@ import HomeIcon from '@material-ui/icons/Home'
 // Components
 import MyButton from 'components/TooltipIconButton'
 // State
-import useAuth from 'state/auth'
+import { useRecoilValue } from 'recoil'
+import { authState } from 'state/atoms/index'
 
 const Navbar = () => {
-  const auth = useAuth()
-  const { authenticated } = auth.state
+  const authenticated = useRecoilValue(authState)
+
   return (
     <AppBar>
       <Toolbar className="nav-container">
         {authenticated ? (
           <>
             <Link to="/">
-              <MyButton tip="Champions">
+              <MyButton tip="ChampionIndex">
                 <HomeIcon />
               </MyButton>
             </Link>

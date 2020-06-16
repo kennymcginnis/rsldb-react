@@ -1,7 +1,7 @@
 import axios from 'axios'
 import { useRecoilState, useRecoilValue } from 'recoil'
 // State
-import { championsState, metadataState } from 'state/atoms'
+import { championsState, metadataState } from 'state/atoms/index'
 import { championData } from 'data/champions'
 import { createMapByKey } from 'util/functions'
 

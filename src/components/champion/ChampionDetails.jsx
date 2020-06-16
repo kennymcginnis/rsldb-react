@@ -8,12 +8,15 @@ import Typography from '@material-ui/core/Typography'
 // Components
 import Button from 'components/Button'
 // State
-import { useRecoilValue } from 'recoil'
-import { championSelector } from 'state/atoms'
+import { useRecoilValue, useSetRecoilState } from 'recoil'
+import { activeChampionState, championSelector } from 'state/atoms'
 
-const Champion = ({ activeChampion, setActiveChampion }) => {
+const ChampionDetails = () => {
   const classes = useStyles()
-  const champion = useRecoilValue(championSelector(activeChampion))
+
+  const champion = useRecoilValue(championSelector)
+  const setActiveChampion = useSetRecoilState(activeChampionState)
+
   return (
     <>
       <Button onClick={() => setActiveChampion(null)}>Back</Button>
@@ -54,4 +57,4 @@ const useStyles = makeStyles(() => ({
   },
 }))
 
-export default Champion
+export default ChampionDetails

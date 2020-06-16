@@ -12,21 +12,24 @@ import ExpandLess from '@material-ui/icons/ExpandLess'
 import ExpandMore from '@material-ui/icons/ExpandMore'
 // State
 import { useRecoilValue } from 'recoil'
+import { filtersState } from 'state/atoms/champions'
 import useFilters from 'state/filters'
-import { filtersState } from 'state/atoms'
+import useMetadata from 'state/metadata'
 
-const Filter = ({ filterType, items }) => {
+const FilterPanel = ({ filterType }) => {
   const classes = useStyles()
 
-  const {
-    type: { [filterType]: type },
-    filtered,
-    indeterminate: { [filterType]: indeterminate },
-  } = useRecoilValue(filtersState)
+  const localFiltersState = useRecoilValue(filtersState)
+  const type = localFiltersState.type[filterType]
+  const indeterminate = localFiltersState.indeterminate[filterType]
+  const { filtered } = localFiltersState
+
   const { handleTypeToggled, handleFilterToggled } = useFilters().reducers
 
   const [open, setOpen] = useState(false)
   const handleClick = () => setOpen(!open)
+
+  const items = useMetadata().reducers.getMetadataState(filterType)
 
   return (
     <List className={classes.root}>
@@ -37,34 +40,36 @@ const Filter = ({ filterType, items }) => {
             disableRipple
             edge="start"
             indeterminate={indeterminate}
-            inputProps={{ 'aria-labelledby': `checkbox-list-label-${type}` }}
-            onChange={handleTypeToggled(filterType, items)}
+            inputProps={{ 'aria-labelledby': `checkbox-list-label-${filterType}` }}
+            onChange={handleTypeToggled(filterType)}
             tabIndex={-1}
           />
         </ListItemIcon>
-        <ListItemText primary={type} onClick={handleClick} />
+        <ListItemText primary={filterType} onClick={handleClick} />
         {open ? <ExpandLess onClick={handleClick} /> : <ExpandMore onClick={handleClick} />}
       </ListItem>
       <Collapse in={open} timeout="auto" unmountOnExit>
         <List component="div" disablePadding>
-          {items.map(listItem => {
-            const { uid, name } = listItem
-            return (
-              <ListItem key={uid} role={undefined} dense button onClick={handleFilterToggled(uid)}>
-                <ListItemIcon>
-                  <Checkbox
-                    checked={filtered[uid]}
-                    className={classes.filterCheckBox}
-                    disableRipple
-                    edge="start"
-                    inputProps={{ 'aria-labelledby': `checkbox-list-label-${uid}` }}
-                    tabIndex={-1}
-                  />
-                </ListItemIcon>
-                <ListItemText id={`checkbox-list-label-${uid}`} primary={name} />
-              </ListItem>
-            )
-          })}
+          {items.map(({ uid, name }) => (
+            <ListItem
+              key={`list-item-${uid}`}
+              button
+              dense
+              onClick={handleFilterToggled(uid, filterType)}
+            >
+              <ListItemIcon>
+                <Checkbox
+                  checked={filtered[uid]}
+                  className={classes.filterCheckBox}
+                  disableRipple
+                  edge="start"
+                  inputProps={{ 'aria-labelledby': `checkbox-list-label-${uid}` }}
+                  tabIndex={-1}
+                />
+              </ListItemIcon>
+              <ListItemText id={`checkbox-list-label-${uid}`} primary={name} />
+            </ListItem>
+          ))}
         </List>
       </Collapse>
     </List>
@@ -82,4 +87,4 @@ const useStyles = makeStyles(theme => ({
   },
 }))
 
-export default Filter
+export default FilterPanel

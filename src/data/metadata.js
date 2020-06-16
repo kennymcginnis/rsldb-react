@@ -1,27 +1,27 @@
-exports.metadata /* 20200516 */ = [
+export const metadata /* 20200516 */ = [
   {
     uid: 'RYN1y624x9yL6X9bPYTY',
     type: 'affinity',
     name: 'Magic',
-    order: 0,
+    order: 3,
   },
   {
     uid: 'W9v8Q3sLIuI3lqyfDh1H',
     type: 'affinity',
     name: 'Spirit',
-    order: 0,
+    order: 4,
   },
   {
     uid: 'XLbuGFJc0sXMVLmAnWKD',
     type: 'affinity',
     name: 'Void',
-    order: 0,
+    order: 1,
   },
   {
     uid: 'dcYXs7No1NW0oIvsGoYj',
     type: 'affinity',
     name: 'Force',
-    order: 0,
+    order: 2,
   },
   {
     uid: '4UnXNv8tbj1ekeujqxFy',
@@ -70,14 +70,14 @@ exports.metadata /* 20200516 */ = [
     type: 'buff',
     name: 'Shield',
     description:
-      'The Champion’s HP bar is reinforced for X Turns with a Shield effect. Damage is calculated normally but is first applied to the Shield (unless the attack ignores Shields, which is stated in the Skill description). When the buff expires or Shield value reaches 0, the Shield is removed and further damage applies as normal. Note: damage dealt to the shield does not count as damage dealt to the Champion, so effects such as Lifesteal do not benefit from it.',
+      'The ChampionDetails’s HP bar is reinforced for X Turns with a Shield effect. Damage is calculated normally but is first applied to the Shield (unless the attack ignores Shields, which is stated in the Skill description). When the buff expires or Shield value reaches 0, the Shield is removed and further damage applies as normal. Note: damage dealt to the shield does not count as damage dealt to the ChampionDetails, so effects such as Lifesteal do not benefit from it.',
     order: 0,
   },
   {
     uid: '1AbVFFmX5FUGX8c6IQn0',
     type: 'buff',
     name: 'Increase SPD',
-    description: 'Increases the Champion’s Battle SPD by 15 / 30%',
+    description: 'Increases the ChampionDetails’s Battle SPD by 15 / 30%',
     order: 0,
   },
   {
@@ -85,7 +85,7 @@ exports.metadata /* 20200516 */ = [
     type: 'buff',
     name: 'Unkillable',
     description:
-      'The Champion with this buff cannot fall below 1 HP for the entirety of its duration.',
+      'The ChampionDetails with this buff cannot fall below 1 HP for the entirety of its duration.',
     order: 0,
   },
   {
@@ -105,7 +105,7 @@ exports.metadata /* 20200516 */ = [
     type: 'buff',
     name: 'Counterattack',
     description:
-      'When attacked, the Champion with this buff strikes back at their attacker using their Default Skill. This attack deals 75% of the normal Default Skill damage. Can only counterattack once when attacked with a Multi-hit Skill. Does not counterattack in response to the enemy’s own counterattack. Does not count as a Turn.',
+      'When attacked, the ChampionDetails with this buff strikes back at their attacker using their Default Skill. This attack deals 75% of the normal Default Skill damage. Can only counterattack once when attacked with a Multi-hit Skill. Does not counterattack in response to the enemy’s own counterattack. Does not count as a Turn.',
     order: 0,
   },
   {
@@ -137,7 +137,7 @@ exports.metadata /* 20200516 */ = [
     type: 'buff',
     name: 'Revive on Death',
     description:
-      'If a Champion with this buff dies, he or she will immediately be revived with 30% HP and 0% Turn Meter.',
+      'If a ChampionDetails with this buff dies, he or she will immediately be revived with 30% HP and 0% Turn Meter.',
     order: 0,
   },
   {
@@ -145,7 +145,7 @@ exports.metadata /* 20200516 */ = [
     type: 'buff',
     name: 'Ally protection',
     description:
-      'The Caster Champion takes 25 / 50% of direct damage inflicted upon the Target Champion. Self-inflicted damage and Poison do not trigger this effect. Each Champion uses their respective DEF values for mitigating damage.',
+      'The Caster ChampionDetails takes 25 / 50% of direct damage inflicted upon the Target ChampionDetails. Self-inflicted damage and Poison do not trigger this effect. Each ChampionDetails uses their respective DEF values for mitigating damage.',
     order: 0,
   },
   {
@@ -164,14 +164,14 @@ exports.metadata /* 20200516 */ = [
     uid: 'gSlRP3oITISghXsmc68C',
     type: 'buff',
     name: 'Increase DEF',
-    description: 'Increases the Champion’s Battle DEF by 30 / 60%',
+    description: 'Increases the ChampionDetails’s Battle DEF by 30 / 60%',
     order: 0,
   },
   {
     uid: 'idWpoI7RKq9IAeNyhSxo',
     type: 'buff',
     name: 'Increase Crit. Rate',
-    description: 'Increases the Champion’s C.RATE by 15 / 30%',
+    description: 'Increases the ChampionDetails’s C.RATE by 15 / 30%',
     order: 0,
   },
   {
@@ -185,7 +185,7 @@ exports.metadata /* 20200516 */ = [
     type: 'buff',
     name: 'Continuous Heal',
     description:
-      'Heals the target Champion by 7,5 / 15% of their MAX HP at the beginning of their Turn.',
+      'Heals the target ChampionDetails by 7,5 / 15% of their MAX HP at the beginning of their Turn.',
     order: 0,
   },
   {
@@ -193,14 +193,14 @@ exports.metadata /* 20200516 */ = [
     type: 'buff',
     name: 'Increase ATK',
     description:
-      'Increases the Champion’s Battle ATK (current ATK value, all other effects taken into account) by 25 / 50%',
+      'Increases the ChampionDetails’s Battle ATK (current ATK value, all other effects taken into account) by 25 / 50%',
     order: 0,
   },
   {
     uid: 'xtrQNK9izsWfmZIhnSht',
     type: 'buff',
     name: 'Block damage',
-    description: 'Makes the Champion immune to all forms of damage.',
+    description: 'Makes the ChampionDetails immune to all forms of damage.',
     order: 0,
   },
   {
@@ -208,7 +208,7 @@ exports.metadata /* 20200516 */ = [
     type: 'buff',
     name: 'Block debuffs',
     description:
-      'While this buff is active, the Champion is immune to all debuffs. Instant negative effect such as Decrease Turn Meter are not affected and work as normal.',
+      'While this buff is active, the ChampionDetails is immune to all debuffs. Instant negative effect such as Decrease Turn Meter are not affected and work as normal.',
     order: 0,
   },
   {
@@ -216,14 +216,14 @@ exports.metadata /* 20200516 */ = [
     type: 'buff',
     name: 'Reflect damage',
     description:
-      'Any Champion attack a target with this buff will sustain 15 / 30% of the damage they inflicted with the attack.',
+      'Any ChampionDetails attack a target with this buff will sustain 15 / 30% of the damage they inflicted with the attack.',
     order: 0,
   },
   {
     uid: '2COwZUAXwxLiq61XJRFY',
     type: 'debuff',
     name: 'Weaken',
-    description: 'Increases damage received by the Target Champion by 15 / 25%.',
+    description: 'Increases damage received by the Target ChampionDetails by 15 / 25%.',
     order: 0,
   },
   {
@@ -231,7 +231,7 @@ exports.metadata /* 20200516 */ = [
     type: 'debuff',
     name: 'Stun',
     description:
-      'The Champion with this debuff is unable to act X Turns. Cooldowns are not refreshed while [Stun] is active.',
+      'The ChampionDetails with this debuff is unable to act X Turns. Cooldowns are not refreshed while [Stun] is active.',
     order: 0,
   },
   {
@@ -239,14 +239,14 @@ exports.metadata /* 20200516 */ = [
     type: 'debuff',
     name: 'Provoke',
     description:
-      'The Champion with this debuff can only attack the Champion that applied it for X Turns, using their Default Skill.',
+      'The ChampionDetails with this debuff can only attack the ChampionDetails that applied it for X Turns, using their Default Skill.',
     order: 0,
   },
   {
     uid: '6UvJ8zkD6lHvml7HWiF2',
     type: 'debuff',
     name: 'Decrease DEF',
-    description: 'Reduces the Champion’s Battle DEF by 25 / 50%.',
+    description: 'Reduces the ChampionDetails’s Battle DEF by 25 / 50%.',
     order: 0,
   },
   {
@@ -254,7 +254,7 @@ exports.metadata /* 20200516 */ = [
     type: 'debuff',
     name: 'Block cooldown skills',
     description:
-      'Prevents the Champion with debuff from using Active Skills other than their Default Skill for the duration of the debuff. Skill Cooldown of the affected Champion refreshes as normal.',
+      'Prevents the ChampionDetails with debuff from using Active Skills other than their Default Skill for the duration of the debuff. Skill Cooldown of the affected ChampionDetails refreshes as normal.',
     order: 0,
   },
   {
@@ -262,7 +262,7 @@ exports.metadata /* 20200516 */ = [
     type: 'debuff',
     name: 'HP Burn',
     description:
-      'While the debuff is active and at the start of the affected Champion’s turn, they and all their allies take damage equal to 3% of their respective MAX HP. There can be only one [HP Burn] debuff active of a Champion at a time. However, if multiple Champions on the Team are debuffed with [HP Burn], all of these debuffs work as normal and apply their full damage. This debuff is often looked for to increase Clan boss damage. Indeed, it has a lot of HP, hence damages based on MAX HP are insane for this fight.',
+      'While the debuff is active and at the start of the affected ChampionDetails’s turn, they and all their allies take damage equal to 3% of their respective MAX HP. There can be only one [HP Burn] debuff active of a ChampionDetails at a time. However, if multiple ChampionIndex on the Team are debuffed with [HP Burn], all of these debuffs work as normal and apply their full damage. This debuff is often looked for to increase Clan boss damage. Indeed, it has a lot of HP, hence damages based on MAX HP are insane for this fight.',
     order: 0,
   },
   {
@@ -299,7 +299,8 @@ exports.metadata /* 20200516 */ = [
     uid: 'Ys2cEZJIjANMdKpN5j05',
     type: 'debuff',
     name: 'Heal reduction',
-    description: 'Any healing received by the Champion with this debuff is reduced by 50 / 100%.',
+    description:
+      'Any healing received by the ChampionDetails with this debuff is reduced by 50 / 100%.',
     order: 0,
   },
   {
@@ -307,7 +308,7 @@ exports.metadata /* 20200516 */ = [
     type: 'debuff',
     name: 'Sleep',
     description:
-      'The Champion with this debuff is unable to act X Turns. Cooldowns are not refreshed while [Sleep] is active. Continuous Heal and Poison Effect work as normal while the Champion is debuffed with [Sleep], so do any Passive Skills that heal the Champion. Any incoming damage that the Champion receives automatically removes [Sleep].',
+      'The ChampionDetails with this debuff is unable to act X Turns. Cooldowns are not refreshed while [Sleep] is active. Continuous Heal and Poison Effect work as normal while the ChampionDetails is debuffed with [Sleep], so do any Passive Skills that heal the ChampionDetails. Any incoming damage that the ChampionDetails receives automatically removes [Sleep].',
     order: 0,
   },
   {
@@ -315,7 +316,7 @@ exports.metadata /* 20200516 */ = [
     type: 'debuff',
     name: 'Freeze',
     description:
-      'The Champion with this debuff is unable to act X Turns. Cooldowns are not refreshed while [Freeze] is active. The Champion only receives 75% of incoming damage.',
+      'The ChampionDetails with this debuff is unable to act X Turns. Cooldowns are not refreshed while [Freeze] is active. The ChampionDetails only receives 75% of incoming damage.',
     order: 0,
   },
   {
@@ -329,7 +330,7 @@ exports.metadata /* 20200516 */ = [
     type: 'debuff',
     name: 'Leech',
     description:
-      'Any Champion that attacks a Champion with this debuff heals for 10% of inflicted damage.',
+      'Any ChampionDetails that attacks a ChampionDetails with this debuff heals for 10% of inflicted damage.',
     order: 0,
   },
   {
@@ -343,7 +344,7 @@ exports.metadata /* 20200516 */ = [
     type: 'debuff',
     name: 'Block Buffs',
     description:
-      'All buffs that are applied to the Champion with this debuff are automatically blocked and have no effect.',
+      'All buffs that are applied to the ChampionDetails with this debuff are automatically blocked and have no effect.',
     order: 0,
   },
   {
@@ -362,21 +363,21 @@ exports.metadata /* 20200516 */ = [
     uid: 'mB35SplfX9ApmzSIbjEO',
     type: 'debuff',
     name: 'Decrease SPD',
-    description: 'Reduces the Champion’s Battle SPD by 25 / 50%.',
+    description: 'Reduces the ChampionDetails’s Battle SPD by 25 / 50%.',
     order: 0,
   },
   {
     uid: 'mwxbB6MlTCEqwwMX97QS',
     type: 'debuff',
     name: 'Decrease ACC',
-    description: 'Reduces the Champion’s Battle ACC by 25 / 50%.',
+    description: 'Reduces the ChampionDetails’s Battle ACC by 25 / 50%.',
     order: 0,
   },
   {
     uid: 'pD4tvmNveNnuOQAdH8J8',
     type: 'debuff',
     name: 'Decrease ATK',
-    description: 'Reduces the Champion’s Battle ATK by 25 / 50%.',
+    description: 'Reduces the ChampionDetails’s Battle ATK by 25 / 50%.',
     order: 0,
   },
   {
@@ -392,7 +393,7 @@ exports.metadata /* 20200516 */ = [
     type: 'debuff',
     name: 'Bomb',
     description:
-      'When this debuff expires, the affected Champion suffers direct damage that ignores their DEF value. The damage inflicted by the bomb scales in accordance with the Stat indicated in the Skill description.',
+      'When this debuff expires, the affected ChampionDetails suffers direct damage that ignores their DEF value. The damage inflicted by the bomb scales in accordance with the Stat indicated in the Skill description.',
     order: 0,
   },
   {
@@ -400,7 +401,7 @@ exports.metadata /* 20200516 */ = [
     type: 'debuff',
     name: 'Poison',
     description:
-      'Damages the target Champion by 2,5 / 5% of their MAX HP at the beginning of their Turn. This damage is not affected by any other effects and only scales in accordance with the Target’s MAX HP. Block Damage blocks it. If the Target Champion has a Shield, Poison damage will be applied to the Shield first. This is one the other debuffs that is often looked for to perform in the Clan boss encounter. Reasons are the same than the [HP Burn](#debuff-hp-burn) one: it has lots of HP.',
+      'Damages the target ChampionDetails by 2,5 / 5% of their MAX HP at the beginning of their Turn. This damage is not affected by any other effects and only scales in accordance with the Target’s MAX HP. Block Damage blocks it. If the Target ChampionDetails has a Shield, Poison damage will be applied to the Shield first. This is one the other debuffs that is often looked for to perform in the Clan boss encounter. Reasons are the same than the [HP Burn](#debuff-hp-burn) one: it has lots of HP.',
     order: 0,
   },
   {
@@ -420,28 +421,28 @@ exports.metadata /* 20200516 */ = [
     uid: 'XoiiwCts8CI5sA3AzzcD',
     type: 'faction',
     name: 'Ogryn Tribes',
-    order: 1,
+    order: 5,
     url: 'assets/ogryn_tribes.png',
   },
   {
     uid: 'anbn7Irv0VFQl66eyFug',
     type: 'faction',
     name: 'Dwarves',
-    order: 1,
+    order: 13,
     url: 'assets/dwarves.png',
   },
   {
     uid: 'i8oIRE6k0fiqicvRzrbu',
     type: 'faction',
     name: 'Demonspawn',
-    order: 1,
+    order: 9,
     url: 'assets/demonspawn.png',
   },
   {
     uid: 'JFEUSeX5Yhkeoui8tOCF',
     type: 'faction',
     name: 'Undead Hordes',
-    order: 2,
+    order: 10,
     url: 'assets/undead_hordes.png',
   },
   {
@@ -455,21 +456,21 @@ exports.metadata /* 20200516 */ = [
     uid: 'shQlJwnDYtoOrey9ZbuO',
     type: 'faction',
     name: 'Lizardmen',
-    order: 2,
+    order: 6,
     url: 'assets/lizardmen.png',
   },
   {
     uid: 'DV5pSYb5zESuZ58fK0H8',
     type: 'faction',
     name: 'Skinwalkers',
-    order: 3,
+    order: 7,
     url: 'assets/skinwalkers.png',
   },
   {
     uid: 'NnFZHVPIqmROWeUF6VyY',
     type: 'faction',
     name: 'Dark Elves',
-    order: 3,
+    order: 11,
     url: 'assets/dark_elves.png',
   },
   {
@@ -483,14 +484,14 @@ exports.metadata /* 20200516 */ = [
     uid: 'I4GVXHmlzTVwFinWzfwg',
     type: 'faction',
     name: 'Knight Revenant',
-    order: 4,
+    order: 12,
     url: 'assets/knight_revenant.png',
   },
   {
     uid: 'xU16oWo1kb34VOYZ3RXW',
     type: 'faction',
     name: 'Orcs',
-    order: 4,
+    order: 8,
     url: 'assets/orcs.png',
   },
   {
@@ -803,18 +804,18 @@ exports.metadata /* 20200516 */ = [
   },
 ]
 
-exports.RARE_RANK_ID = '4UKgV40Fq9i0ySxLqE3f'
-exports.LEGENDARY_RANK_ID = 'HH7lefSp7UN9JXWrXepz'
-exports.COMMON_RANK_ID = 'a5Hb3kKctPjvjKjonv1M'
-exports.UNCOMMON_RANK_ID = 'a8KGPwQrfqGKDPzgdJXG'
-exports.EPIC_RANK_ID = 's9nWh3XrywUKO4FmAWaf'
+export const RARE_RANK_ID = '4UKgV40Fq9i0ySxLqE3f'
+export const LEGENDARY_RANK_ID = 'HH7lefSp7UN9JXWrXepz'
+export const COMMON_RANK_ID = 'a5Hb3kKctPjvjKjonv1M'
+export const UNCOMMON_RANK_ID = 'a8KGPwQrfqGKDPzgdJXG'
+export const EPIC_RANK_ID = 's9nWh3XrywUKO4FmAWaf'
 
-exports.MAGIC_AFFINITY_ID = 'RYN1y624x9yL6X9bPYTY'
-exports.SPIRIT_AFFINITY_ID = 'W9v8Q3sLIuI3lqyfDh1H'
-exports.VOID_AFFINITY_ID = 'XLbuGFJc0sXMVLmAnWKD'
-exports.FORCE_AFFINITY_ID = 'dcYXs7No1NW0oIvsGoYj'
+export const MAGIC_AFFINITY_ID = 'RYN1y624x9yL6X9bPYTY'
+export const SPIRIT_AFFINITY_ID = 'W9v8Q3sLIuI3lqyfDh1H'
+export const VOID_AFFINITY_ID = 'XLbuGFJc0sXMVLmAnWKD'
+export const FORCE_AFFINITY_ID = 'dcYXs7No1NW0oIvsGoYj'
 
-exports.defaultRanks = {
+const defaultRanks = {
   COMMON_RANK_ID: 1,
   UNCOMMON_RANK_ID: 2,
   RARE_RANK_ID: 3,
