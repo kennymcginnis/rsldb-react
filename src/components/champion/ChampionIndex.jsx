@@ -1,5 +1,4 @@
 import React, { useEffect } from 'react'
-import { useRecoilState, useRecoilValue } from 'recoil'
 // MUI
 import { makeStyles } from '@material-ui/core/styles'
 import Grid from '@material-ui/core/Grid'
@@ -8,14 +7,19 @@ import FilterPanel from 'components/champion/FilterPanel'
 import ChampionGrouping from 'components/champion/ChampionGrouping'
 import GroupingPanel from 'components/champion/GroupingPanel'
 // State
+import { useRecoilState, useRecoilValue } from 'recoil'
 import useMetadata from 'state/metadata'
 import { championsDisplay, filtersState } from 'state/atoms'
 import { createFilterWithState } from 'util/functions'
+import { groupingState } from 'state/atoms'
 
 const ChampionIndex = () => {
   const classes = useStyles()
   const metadata = useMetadata().reducers.getMetadataState('metadata')
-  const champions = useRecoilValue(championsDisplay)
+
+  const grouping = useRecoilValue(championsDisplay)
+  const groupings = useRecoilValue(groupingState)
+  const levelCount = groupings.filter(a => a.order > 0).length
 
   const [localFiltersState, setFiltersState] = useRecoilState(filtersState)
   useEffect(() => {
@@ -46,8 +50,10 @@ const ChampionIndex = () => {
           ))}
         </Grid>
         <Grid key="champions-column" className={classes.championsColumn} item lg={9} xs={12}>
-          <GroupingPanel />
-          {champions && <ChampionGrouping grouping={champions} level={0} />}
+          <GroupingPanel key="grouping-header" />
+          {grouping && (
+            <ChampionGrouping {...{ grouping, path: 'champions', level: 0, levelCount }} />
+          )}
         </Grid>
       </Grid>
     </React.Suspense>

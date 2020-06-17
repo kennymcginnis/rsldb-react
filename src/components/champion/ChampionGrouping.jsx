@@ -1,56 +1,101 @@
 import React, { useState } from 'react'
+import getByPath from 'lodash/get'
+import setByPath from 'lodash/set'
 // MUI
 import { makeStyles } from '@material-ui/core/styles'
-import Grid from '@material-ui/core/Grid'
 import ExpansionPanel from '@material-ui/core/ExpansionPanel'
-import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary'
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails'
+import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary'
+import Grid from '@material-ui/core/Grid'
+import IconButton from '@material-ui/core/IconButton'
 import Typography from '@material-ui/core/Typography'
+// Icons
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
+import { BsArrowsCollapse, BsArrowsExpand } from 'react-icons/bs'
 // Components
 import ChampionCard from 'components/champion/ChampionCard'
+// State
+import { useRecoilState } from 'recoil'
+import { expandedState } from 'state/atoms'
 
-const ChampionGrouping = ({ grouping, level }) => {
+const ChampionGrouping = ({ grouping, path, level, levelCount }) => {
   const classes = useStyles()
 
-  // const defaults grouping
-  const defaults = grouping.map((i, index) => level > 0 || index === 0)
-  const [expanded, setExpanded] = React.useState(defaults)
-  const handleChange = index => (event, isExpanded) => {
-    const newExpanded = [...expanded]
-    newExpanded[index] = isExpanded
+  const [expanded, setExpanded] = useRecoilState(expandedState)
+  const handleExpandCollapse = name => (event, isExpanded) =>
+    setExpanded({ ...expanded, [name]: isExpanded })
+
+  const [expandedSection, setExpandedSection] = useState({})
+  const handleExpandCollapseSection = (element, currentPath) => event => {
+    event.stopPropagation()
+    const isExpanded = !expandedSection[currentPath]
+    setExpandedSection({ ...expandedSection, [currentPath]: isExpanded })
+
+    const newExpanded = { ...expanded, [currentPath]: isExpanded }
+    element.children.forEach(child => (newExpanded[`${currentPath}.${child.name}`] = isExpanded))
     setExpanded(newExpanded)
   }
 
+  const ExpansionPanel = ({ currentPath, element }) => (
+    <ExpansionPanel
+      className={classes.expansionPanel}
+      expanded={expanded[currentPath] || false}
+      onChange={handleExpandCollapse(currentPath)}
+    >
+      <ExpansionPanelSummary
+        {...(expanded[currentPath] && { className: classes.expansionPanelSummary })}
+        id={`eps-${currentPath}`}
+        expandIcon={
+          <ExpandMoreIcon {...(expanded[currentPath] && { className: classes.expandMoreIcon })} />
+        }
+      >
+        <Grid container direction="row" justify="space-between" alignItems="center">
+          <Typography className={classes.heading}>{element.name}</Typography>
+          {level < levelCount - 1 && (
+            <IconButton
+              onClick={handleExpandCollapseSection(element, currentPath)}
+              style={{ color: expanded[currentPath] ? 'white' : 'rgba(0, 0, 0, 0.54)' }}
+            >
+              {expandedSection[currentPath] ? (
+                <BsArrowsCollapse fontSize="large" />
+              ) : (
+                <BsArrowsExpand fontSize="large" />
+              )}
+            </IconButton>
+          )}
+        </Grid>
+      </ExpansionPanelSummary>
+      <ExpansionPanelDetails>
+        {expanded[currentPath] && (
+          <ChampionGrouping
+            {...{
+              grouping: element.children,
+              path: currentPath,
+              level: level + 1,
+              levelCount,
+            }}
+          />
+        )}
+      </ExpansionPanelDetails>
+    </ExpansionPanel>
+  )
+
   return (
     <Grid item container direction="row" className={classes.groupingRoot}>
-      {grouping.map((element, index) =>
-        Array.isArray(element.children) ? (
-          <ExpansionPanel
-            className={classes.expansionPanel}
-            key={`ep-${level}-${index}`}
-            expanded={expanded[index]}
-            onChange={handleChange(index)}
-          >
-            <ExpansionPanelSummary
-              {...(expanded[index] && { className: classes.expansionPanelSummary })}
-              id={`eps-${level}-${index}`}
-              key={`eps-${level}-${index}`}
-              expandIcon={
-                <ExpandMoreIcon {...(expanded[index] && { className: classes.expandMoreIcon })} />
-              }
-            >
-              <Typography className={classes.heading}>{element.name}</Typography>
-            </ExpansionPanelSummary>
-            <ExpansionPanelDetails>
-              {expanded[index] && (
-                <ChampionGrouping grouping={element.children} level={level + 1} />
-              )}
-            </ExpansionPanelDetails>
-          </ExpansionPanel>
-        ) : (
-          <ChampionCard key={element.uid} champion={element} />
-        ),
+      {level === 0 ? (
+        <ExpansionPanel key="ep-champions" element={grouping} path={path} />
+      ) : (
+        grouping.map(element =>
+          level < levelCount ? (
+            <ExpansionPanel
+              key={`ep-${path}-${element.name}`}
+              element={element}
+              currentPath={`${path}.${element.name}`}
+            />
+          ) : (
+            <ChampionCard key={element.uid} champion={element} />
+          ),
+        )
       )}
     </Grid>
   )
@@ -74,6 +119,9 @@ const useStyles = makeStyles(theme => ({
   heading: {
     fontSize: theme.typography.pxToRem(15),
     fontWeight: theme.typography.fontWeightRegular,
+  },
+  iconButton: {
+    color: 'white',
   },
 }))
 

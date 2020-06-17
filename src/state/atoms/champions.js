@@ -50,6 +50,11 @@ export const groupingState = atom({
   ],
 })
 
+export const expandedState = atom({
+  key: 'expanded',
+  default: {},
+})
+
 export const championsDisplay = selector({
   key: 'championsDisplay',
   get: ({ get }) => {
@@ -74,14 +79,14 @@ export const championsDisplay = selector({
       return !(rarity && affinity && faction)
     }
 
-    let output = []
+    let output = { name: 'champions', children: [] }
     champions.forEach(champion => {
       if (isFiltered(champion)) return
       const { attributes } = champion
 
-      let currentPath = []
+      let currentPath = ['children']
       if (groupings.length > 0) {
-        groupings.forEach(grouping => {
+        groupings.forEach((grouping, index) => {
           const { name, order } = attributes[grouping]
           currentPath.push(order - 1)
           setByPath(output, [...currentPath, 'name'], name)

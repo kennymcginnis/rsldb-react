@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import clsx from 'clsx'
 // MUI
 import { makeStyles } from '@material-ui/core/styles'
@@ -18,7 +18,7 @@ import { MdCropSquare, MdLooks3, MdLooksOne, MdLooksTwo } from 'react-icons/md'
 // State
 import { useRecoilState } from 'recoil'
 import { filtersState, groupingState } from 'state/atoms'
-import { useDebouncedCallback } from 'util/useDebouncedCallback'
+import debounce from '@material-ui/core/utils/debounce'
 
 const GroupingPanel = () => {
   const classes = useStyles()
@@ -26,25 +26,17 @@ const GroupingPanel = () => {
   const [groupings, setGroupings] = useRecoilState(groupingState)
   const [toggled, setToggled] = React.useState(() => ['faction', 'rarity'])
 
-  const debouncedSetValue = useDebouncedCallback(showAlert, 500)
-
-  const [value, setValue] = useRecoilState(groupingState)
-  const handleClick = (event, name) => {
+  const handleToggleClicked = (event, name) => {
     const max = groupings.reduce((agg, item) => (item.order > 0 ? ++agg : agg, agg), 1)
     const prior = groupings.find(grouping => name === grouping.type).order
     const checking = prior === 0
     const newGrouping = groupings.map(item => {
       let { order, type } = item
       if (checking) {
-        if (type === name) {
-          order = max
-        }
+        if (type === name) order = max
       } /* unchecking */ else {
-        if (type === name) {
-          order = 0
-        } else if (order > prior) {
-          order = item.order - 1
-        }
+        if (type === name) order = 0
+        else if (order > prior) order = item.order - 1
       }
       return { order, type }
     })
@@ -54,9 +46,16 @@ const GroupingPanel = () => {
     setToggled(newToggled)
   }
 
-  const handleChange = event => {
-    setFilters({ ...filters, searched: event.target.value })
+  const [searched, setSearched] = useState('')
+  const handleSearchForChanged = event => {
+    const searched = event.target.value.toLowerCase()
+    setSearched(searched)
+    // Adding a delay on champion filter, because there can be a lot of champs rendered
+    setDebouncedSearch(searched)
   }
+  const setDebouncedSearch = debounce(searched => {
+    setFilters({ ...filters, searched })
+  }, 1000)
 
   return (
     <Card className={classes.sortingCard}>
@@ -75,7 +74,7 @@ const GroupingPanel = () => {
                   key={`ToggleButton-${type}`}
                   value={type}
                   aria-label={type}
-                  onClick={handleClick}
+                  onClick={handleToggleClicked}
                 >
                   {customIcons[order]}
                   <Typography style={{ paddingRight: 8 }}>{type}</Typography>
@@ -91,8 +90,8 @@ const GroupingPanel = () => {
               <OutlinedInput
                 id="outlined-adornment-search"
                 type="text"
-                value={filters.searched || ''}
-                onChange={handleChange}
+                value={searched}
+                onChange={handleSearchForChanged}
                 endAdornment={
                   <InputAdornment position="end">
                     <IconButton aria-label="toggle password visibility" edge="end">
