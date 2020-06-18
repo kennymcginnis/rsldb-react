@@ -13,7 +13,7 @@ import ToggleButton from '@material-ui/lab/ToggleButton'
 import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup'
 import Typography from '@material-ui/core/Typography'
 // Icons
-import Search from '@material-ui/icons/Search'
+import Clear from '@material-ui/icons/Clear'
 import { MdCropSquare, MdLooks3, MdLooksOne, MdLooksTwo } from 'react-icons/md'
 // State
 import { useRecoilState } from 'recoil'
@@ -24,7 +24,7 @@ const GroupingPanel = () => {
   const classes = useStyles()
   const [filters, setFilters] = useRecoilState(filtersState)
   const [groupings, setGroupings] = useRecoilState(groupingState)
-  const [toggled, setToggled] = React.useState(() => ['faction', 'rarity'])
+  const [toggled, setToggled] = useState(() => ['faction', 'rarity'])
 
   const handleToggleClicked = (event, name) => {
     const max = groupings.reduce((agg, item) => (item.order > 0 ? ++agg : agg, agg), 1)
@@ -53,6 +53,10 @@ const GroupingPanel = () => {
     // Adding a delay on champion filter, because there can be a lot of champs rendered
     setDebouncedSearch(searched)
   }
+  const handleSearchForCleared = event => {
+    setSearched('')
+    setFilters(previous => ({ ...previous, searched: '' }))
+  }
   const setDebouncedSearch = debounce(searched => {
     setFilters({ ...filters, searched })
   }, 1000)
@@ -66,7 +70,7 @@ const GroupingPanel = () => {
         className={classes.root}
         style={{ flexWrap: 'nowrap' }}
       >
-        <Grid item sm={12} lg={4}>
+        <Grid item sm={12} lg={12}>
           <div className={classes.toggleContainer}>
             <ToggleButtonGroup value={toggled} aria-label="text alignment" style={{ height: 58 }}>
               {groupings.map(({ type, order }) => (
@@ -94,8 +98,12 @@ const GroupingPanel = () => {
                 onChange={handleSearchForChanged}
                 endAdornment={
                   <InputAdornment position="end">
-                    <IconButton aria-label="toggle password visibility" edge="end">
-                      <Search />
+                    <IconButton
+                      aria-label="toggle password visibility"
+                      edge="end"
+                      onClick={handleSearchForCleared}
+                    >
+                      <Clear />
                     </IconButton>
                   </InputAdornment>
                 }
@@ -119,6 +127,7 @@ const customIcons = {
 const useStyles = makeStyles(theme => ({
   root: {
     paddingLeft: 10,
+    paddingRight: 10,
     '& > *': {
       margin: theme.spacing(1),
     },

@@ -814,11 +814,3 @@ export const MAGIC_AFFINITY_ID = 'RYN1y624x9yL6X9bPYTY'
 export const SPIRIT_AFFINITY_ID = 'W9v8Q3sLIuI3lqyfDh1H'
 export const VOID_AFFINITY_ID = 'XLbuGFJc0sXMVLmAnWKD'
 export const FORCE_AFFINITY_ID = 'dcYXs7No1NW0oIvsGoYj'
-
-const defaultRanks = {
-  COMMON_RANK_ID: 1,
-  UNCOMMON_RANK_ID: 2,
-  RARE_RANK_ID: 3,
-  EPIC_RANK_ID: 4,
-  LEGENDARY_RANK_ID: 5,
-}

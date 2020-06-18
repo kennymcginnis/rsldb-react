@@ -12,21 +12,22 @@ const useFilters = () => {
       const { type, indeterminate } = localFiltersState
       const allChecked = items.every(item => filtered[item.uid])
       const unchecked = items.every(item => !filtered[item.uid])
-      setFiltersState({
-        filtered,
+      setFiltersState(previous => ({
+        ...previous,
         type: { ...type, [filterType]: allChecked },
         indeterminate: { ...indeterminate, [filterType]: !(allChecked || unchecked) },
-      })
+      }))
     },
     handleTypeToggled: filterType => event => {
       const items = getMetadataState(filterType)
       const { type, filtered } = localFiltersState
       const updates = createFilterWithState(items, event.target.checked)
-      setFiltersState({
+      setFiltersState(previous => ({
+        ...previous,
         filtered: { ...filtered, ...updates },
         type: { ...type, [filterType]: event.target.checked },
         indeterminate: false,
-      })
+      }))
     },
     handleFilterToggled: (uid, filterType) => () => {
       const items = getMetadataState(filterType)
@@ -41,7 +42,7 @@ const useFilters = () => {
       const type = { ...localFiltersState.type, [filterType]: false }
       const indeterminate = { ...localFiltersState.indeterminate, [filterType]: true }
       items.forEach(item => (filtered[item.uid] = item.uid === filter))
-      setFiltersState({ filtered, type, indeterminate })
+      setFiltersState(previous => ({ ...previous, filtered, type, indeterminate }))
     },
   }
 
