@@ -49,6 +49,7 @@ const ExpansionPanel = ({ element, path }) => {
 
   return (
     <MdExpansionPanel
+      key={`${path}-${element.name}`}
       className={classes.expansionPanel}
       expanded={expanded[path] || false}
       onChange={handleExpandCollapse(path)}
@@ -69,7 +70,7 @@ const ExpansionPanel = ({ element, path }) => {
           </Typography>
           {hasGrandchildren(element) && (
             <IconButton
-              onClick={handleExpandCollapseSection(element, path)}
+              onClick={e => handleExpandCollapseSection(element, path)(e)}
               style={{ color: expanded[path] ? 'white' : 'rgba(0, 0, 0, 0.54)' }}
             >
               {expandedSection[path] ? (
@@ -82,7 +83,9 @@ const ExpansionPanel = ({ element, path }) => {
         </Grid>
       </ExpansionPanelSummary>
       <ExpansionPanelDetails>
-        {expanded[path] && <ChampionGrouping group={element.children} path={path} />}
+        {expanded[path] && (
+          <ChampionGrouping key={`${path}-${element.name}`} group={element.children} path={path} />
+        )}
       </ExpansionPanelDetails>
     </MdExpansionPanel>
   )

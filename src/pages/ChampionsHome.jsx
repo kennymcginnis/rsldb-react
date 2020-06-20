@@ -104,7 +104,7 @@ const ChampionsHome = () => {
                 lg: 12 - (groupFilter?.length ? 3 : 0) - (!!pullConsume ? 3 : 0),
               }}
             >
-              {group && <ChampionGrouping group={group} path="champions" />}
+              {group && <ChampionGrouping key="champ-group" group={group} path="champions" />}
             </Grid>
             {pullConsume && (
               <Grid key="acquired-column" className={classes.rightColumn} {...small}>
