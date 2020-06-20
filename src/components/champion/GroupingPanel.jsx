@@ -1,28 +1,20 @@
 import React, { useState } from 'react'
-import clsx from 'clsx'
 // MUI
 import { makeStyles } from '@material-ui/core/styles'
 import Card from '@material-ui/core/Card'
-import FormControl from '@material-ui/core/FormControl'
-import Grid from '@material-ui/core/Grid'
-import IconButton from '@material-ui/core/IconButton'
-import InputAdornment from '@material-ui/core/InputAdornment'
-import InputLabel from '@material-ui/core/InputLabel'
-import OutlinedInput from '@material-ui/core/OutlinedInput'
 import ToggleButton from '@material-ui/lab/ToggleButton'
 import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup'
 import Typography from '@material-ui/core/Typography'
 // Icons
-import Clear from '@material-ui/icons/Clear'
 import { MdCropSquare, MdLooks3, MdLooksOne, MdLooksTwo } from 'react-icons/md'
 // State
 import { useRecoilState } from 'recoil'
-import { filtersState, groupingState } from 'state/atoms'
-import debounce from '@material-ui/core/utils/debounce'
+import { groupingState } from 'state/atoms'
+import Grid from '@material-ui/core/Grid'
+import CardHeader from '@material-ui/core/CardHeader'
 
 const GroupingPanel = () => {
   const classes = useStyles()
-  const [filters, setFilters] = useRecoilState(filtersState)
   const [groupings, setGroupings] = useRecoilState(groupingState)
   const [toggled, setToggled] = useState(() => ['faction', 'rarity'])
 
@@ -46,104 +38,51 @@ const GroupingPanel = () => {
     setToggled(newToggled)
   }
 
-  const [searched, setSearched] = useState('')
-  const handleSearchForChanged = event => {
-    const searched = event.target.value.toLowerCase()
-    setSearched(searched)
-    // Adding a delay on champion filter, because there can be a lot of champs rendered
-    setDebouncedSearch(searched)
+  const customIcons = {
+    0: <MdCropSquare size={24} style={{ paddingRight: 6 }} />,
+    1: <MdLooksOne size={24} className={classes.icons} />,
+    2: <MdLooksTwo size={24} className={classes.icons} />,
+    3: <MdLooks3 size={24} className={classes.icons} />,
   }
-  const handleSearchForCleared = event => {
-    setSearched('')
-    setFilters(previous => ({ ...previous, searched: '' }))
-  }
-  const setDebouncedSearch = debounce(searched => {
-    setFilters({ ...filters, searched })
-  }, 1000)
 
   return (
-    <Card className={classes.sortingCard}>
-      <Grid
-        container
-        alignItems="center"
-        spacing={2}
-        className={classes.root}
-        style={{ flexWrap: 'nowrap' }}
-      >
-        <Grid item sm={12} lg={12}>
-          <div className={classes.toggleContainer}>
-            <ToggleButtonGroup value={toggled} aria-label="text alignment" style={{ height: 58 }}>
-              {groupings.map(({ type, order }) => (
-                <ToggleButton
-                  key={`ToggleButton-${type}`}
-                  value={type}
-                  aria-label={type}
-                  onClick={handleToggleClicked}
-                >
-                  {customIcons[order]}
-                  <Typography style={{ paddingRight: 8 }}>{type}</Typography>
-                </ToggleButton>
-              ))}
-            </ToggleButtonGroup>
-          </div>
-        </Grid>
-        <Grid item sm={12} lg={8}>
-          <div className={classes.searchContainer}>
-            <FormControl className={clsx(classes.margin, classes.textField)} variant="outlined">
-              <InputLabel htmlFor="outlined-adornment-search">{'SEARCH FOR...'}</InputLabel>
-              <OutlinedInput
-                id="outlined-adornment-search"
-                type="text"
-                value={searched}
-                onChange={handleSearchForChanged}
-                endAdornment={
-                  <InputAdornment position="end">
-                    <IconButton
-                      aria-label="toggle password visibility"
-                      edge="end"
-                      onClick={handleSearchForCleared}
-                    >
-                      <Clear />
-                    </IconButton>
-                  </InputAdornment>
-                }
-                labelWidth={120}
-              />
-            </FormControl>
-          </div>
-        </Grid>
+    <Card className={classes.groupingCard}>
+      <CardHeader title="Group Champions" className={classes.cardHeader} />
+      <Grid container justify="center" className={classes.toggleContainer}>
+        <ToggleButtonGroup value={toggled} aria-label="text alignment" style={{ height: 58 }}>
+          {groupings.map(({ type, order }) => (
+            <ToggleButton
+              key={`ToggleButton-${type}`}
+              value={type}
+              aria-label={type}
+              onClick={handleToggleClicked}
+            >
+              {customIcons[order]}
+              <Typography style={{ paddingRight: 8 }}>{type}</Typography>
+            </ToggleButton>
+          ))}
+        </ToggleButtonGroup>
       </Grid>
     </Card>
   )
 }
 
-const customIcons = {
-  0: <MdCropSquare size={24} style={{ paddingRight: 6 }} />,
-  1: <MdLooksOne size={24} style={{ paddingRight: 6, color: '#4035d0' }} />,
-  2: <MdLooksTwo size={24} style={{ paddingRight: 6, color: '#4035d0' }} />,
-  3: <MdLooks3 size={24} style={{ paddingRight: 6, color: '#4035d0' }} />,
-}
-
 const useStyles = makeStyles(theme => ({
-  root: {
-    paddingLeft: 10,
-    paddingRight: 10,
-    '& > *': {
-      margin: theme.spacing(1),
-    },
+  groupingCard: {
+    margin: 0,
+    marginBottom: 10,
+    width: `calc(100% - ${theme.spacing(2)}px)`,
+  },
+  cardHeader: {
+    color: 'white',
+    backgroundColor: theme.palette.secondary.main,
   },
   toggleContainer: {
     margin: theme.spacing(3, 0),
   },
-  searchContainer: {
-    margin: theme.spacing(3, 0),
-  },
-  sortingCard: {
-    margin: 0,
-    width: 'calc(100% - 10px)',
-  },
-  textField: {
-    width: '35ch',
+  icons: {
+    paddingRight: 6,
+    color: theme.palette.secondary.main,
   },
 }))
 

@@ -32,8 +32,7 @@ const ChampionGrouping = ({ group, path }) => {
 
 const useStyles = makeStyles(() => ({
   groupingRoot: {
-    marginTop: 12,
-    width: 'calc(100% - 10px)',
+    width: 'calc(100% - 16px)',
   },
 }))
 

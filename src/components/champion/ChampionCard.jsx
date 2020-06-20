@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 // MUI
 import { makeStyles } from '@material-ui/core/styles'
 import Button from '@material-ui/core/Button'
@@ -9,24 +9,34 @@ import CardContent from '@material-ui/core/CardContent'
 import CardMedia from '@material-ui/core/CardMedia'
 import Typography from '@material-ui/core/Typography'
 // State
-import { useSetRecoilState } from 'recoil'
+import { useRecoilState, useSetRecoilState } from 'recoil'
 import { activeChampionState } from 'state/atoms/index'
 import useFilters from 'state/filters'
 // Styles
 import { colors } from 'styles/colors'
+import Check from '@material-ui/icons/Check'
+import { selectedState } from '../../state/atoms'
 
 const ChampionCard = ({ champion }) => {
   const classes = useStyles()
 
-  const setActiveChampion = useSetRecoilState(activeChampionState)
-  const handleClick = uid => () => setActiveChampion({ activeChampion: uid })
+  // const setActiveChampion = useSetRecoilState(activeChampionState)
+
+  const [checked, setChecked] = useRecoilState(selectedState)
+  const handleClick = uid => () => {
+    const isChecked = !checked[uid]
+    setChecked(previous => ({
+      ...previous,
+      [uid]: isChecked,
+    }))
+  }
 
   const filters = useFilters()
   const { affinity, faction, rarity } = champion.attributes
   const { borderColor, gradient } = colors[rarity.name]
   return (
     <Card className={classes.card} style={{ background: gradient }}>
-      <CardActionArea style={{ height: 220 }} onClick={handleClick}>
+      <CardActionArea style={{ height: 220 }} onClick={handleClick(champion.uid)}>
         <CardContent>
           <Typography gutterBottom variant="h5" component="h2" className={classes.name}>
             {champion.name.toUpperCase()}
@@ -37,6 +47,11 @@ const ChampionCard = ({ champion }) => {
             title={champion.name}
             style={{ borderColor }}
           />
+          {checked[champion.uid] && (
+            <div className={classes.overlay}>
+              <Check className={classes.checkBox} />
+            </div>
+          )}
         </CardContent>
       </CardActionArea>
       <Button
@@ -80,6 +95,20 @@ const useStyles = makeStyles(theme => ({
   cardActions: {
     padding: 0,
     justifyContent: 'space-between',
+  },
+  overlay: {
+    top: 0,
+    left: 0,
+    width: '100%',
+    height: 280,
+    position: 'absolute',
+    backgroundColor: '#353434bd',
+  },
+  checkBox: {
+    width: '2em',
+    height: '2em',
+    fontSize: '2rem',
+    color: '#6fa2ff',
   },
 }))
 

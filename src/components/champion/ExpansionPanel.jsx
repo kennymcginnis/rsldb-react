@@ -1,15 +1,16 @@
 import React, { useState } from 'react'
+import clsx from 'clsx'
 // MUI
 import { makeStyles } from '@material-ui/core/styles'
-import MdExpansionPanel from '@material-ui/core/ExpansionPanel'
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails'
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary'
 import Grid from '@material-ui/core/Grid'
 import IconButton from '@material-ui/core/IconButton'
+import MdExpansionPanel from '@material-ui/core/ExpansionPanel'
 import Typography from '@material-ui/core/Typography'
 // Icons
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import { BsArrowsCollapse, BsArrowsExpand } from 'react-icons/bs'
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 // Components
 import ChampionGrouping from 'components/champion/ChampionGrouping'
 // State
@@ -28,7 +29,7 @@ const ExpansionPanel = ({ element, path }) => {
   const expandCollapseChildren = ({ item, path, newExpanded, isExpanded }) => {
     item.children.forEach(child => {
       const childPath = `${path}.${child.name}`
-      if (element.name === 'Champions' && hasGrandchildren(item))
+      if (path === 'champions' && hasGrandchildren(item))
         expandCollapseChildren({ item: child, path: childPath, newExpanded, isExpanded })
       return (newExpanded[childPath] = isExpanded)
     })
@@ -55,12 +56,17 @@ const ExpansionPanel = ({ element, path }) => {
       <ExpansionPanelSummary
         {...(expanded[path] && { className: classes.expansionPanelSummary })}
         id={`eps-${path}`}
+        color="secondary"
         expandIcon={
           <ExpandMoreIcon {...(expanded[path] && { className: classes.expandMoreIcon })} />
         }
       >
         <Grid container direction="row" justify="space-between" alignItems="center">
-          <Typography className={classes.heading}>{element.name}</Typography>
+          <Typography
+            className={clsx(classes.heading, path === 'champions' ? classes.rootHeader : null)}
+          >
+            {element.name}
+          </Typography>
           {hasGrandchildren(element) && (
             <IconButton
               onClick={handleExpandCollapseSection(element, path)}
@@ -88,7 +94,8 @@ const useStyles = makeStyles(theme => ({
   },
   expansionPanelSummary: {
     color: 'white',
-    backgroundColor: '#4035d0',
+    backgroundColor: theme.palette.secondary.main,
+    borderRadius: '4px 4px 0 0',
   },
   expandMoreIcon: {
     color: 'white',
@@ -96,6 +103,9 @@ const useStyles = makeStyles(theme => ({
   heading: {
     fontSize: theme.typography.pxToRem(15),
     fontWeight: theme.typography.fontWeightRegular,
+  },
+  rootHeader: {
+    fontSize: 20,
   },
 }))
 

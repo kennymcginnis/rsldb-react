@@ -1,12 +1,10 @@
 import { unstable_createMuiStrictModeTheme } from '@material-ui/core/styles'
 import { green, grey, red } from '@material-ui/core/colors'
-// import Background from 'public/raid-header.jpg'
 
 const rawTheme = unstable_createMuiStrictModeTheme({
-  /*
   '@global': {
     body: {
-      backgroundImage: `url(${Background})`,
+      backgroundImage: `url(%PUBLIC_URL%/public/raid-header.jpg)`,
       backgroundRepeat: 'no-repeat',
       backgroundPosition: 'center center',
       backgroundSize: 'cover',
@@ -20,7 +18,6 @@ const rawTheme = unstable_createMuiStrictModeTheme({
       height: '100%',
     },
   },
-  */
   palette: {
     primary: {
       light: '#69696a',
