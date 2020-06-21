@@ -12,6 +12,7 @@ import 'App.css'
 // State
 import useMetadata from 'state/metadata'
 import useChampions from 'state/champions'
+import useAuth from './state/auth'
 
 axios.defaults.baseURL = 'http://localhost:5000/rsl-db/us-central1/api/'
 
@@ -20,6 +21,7 @@ const queryConfig = {
 }
 
 const MetadataLoader = ({ children }) => {
+  const auth = useAuth()
   const data = useMetadata()
   const champ = useChampions()
 

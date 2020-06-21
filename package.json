@@ -33,6 +33,7 @@
     "react-scripts": "^3.4.1",
     "react-stack-grid": "^0.7.1",
     "recoil": "0.0.8",
+    "uuidv4": "^6.1.0",
     "validator": "^13.0.0"
   },
   "devDependencies": {

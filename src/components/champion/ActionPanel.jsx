@@ -3,21 +3,22 @@ import 'components/bootstrap'
 // MUI
 import { makeStyles } from '@material-ui/core/styles'
 import Avatar from '@material-ui/core/Avatar'
+import Button from '@material-ui/core/Button'
+import ButtonGroup from '@material-ui/core/ButtonGroup'
 import Card from '@material-ui/core/Card'
 import CardHeader from '@material-ui/core/CardHeader'
 import Divider from '@material-ui/core/Divider'
-import IconButton from '@material-ui/core/IconButton'
+import Fab from '@material-ui/core/Fab'
 import List from '@material-ui/core/List'
 import ListItem from '@material-ui/core/ListItem'
 import ListItemAvatar from '@material-ui/core/ListItemAvatar'
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction'
 import ListItemText from '@material-ui/core/ListItemText'
 // Icons
-import DeleteIcon from '@material-ui/icons/Delete'
+import SaveIcon from '@material-ui/icons/Save'
 // State
 import { useRecoilState, useRecoilValue } from 'recoil'
 import { championsState, selectedState } from 'state/atoms'
-import Button from '../Button'
 
 const ActionPanel = ({ type }) => {
   const classes = useStyles()
@@ -25,21 +26,20 @@ const ActionPanel = ({ type }) => {
   const [checked, setChecked] = useRecoilState(selectedState)
   const { championMap } = useRecoilValue(championsState)
 
-  const handleDelete = uid => () => {
-    setChecked(previous => ({ ...previous, [uid]: false }))
-  }
+  const handleIncrement = uid => () =>
+    setChecked(previous => ({ ...previous, [uid]: previous[uid] + 1 }))
+  const handleDecrement = uid => () =>
+    setChecked(previous => ({ ...previous, [uid]: previous[uid] - 1 }))
 
+  const title = type === 'pull' ? 'Add Champions to Inventory' : 'Remove Champions from Inventory'
   return (
-    <Card style={{ minHeight: '83vh' }}>
-      <CardHeader title={type} className={classes.cardHeader}>
-        <Button>Cancel</Button>
-        <Button>Save</Button>
-      </CardHeader>
+    <Card className={classes.actionCard}>
+      <CardHeader title={title} className={classes.cardHeader} />
       <List>
         {Object.keys(checked).map(uid => {
           const { name, avatar } = championMap[uid]
           return (
-            checked[uid] && (
+            checked[uid] > 0 && (
               <span key={`action-${uid}`}>
                 <ListItem button>
                   <ListItemAvatar style={{ marginRight: 10 }}>
@@ -47,9 +47,15 @@ const ActionPanel = ({ type }) => {
                   </ListItemAvatar>
                   <ListItemText primary={name} />
                   <ListItemSecondaryAction style={{ marginRight: 10 }}>
-                    <IconButton edge="end" aria-label="delete" onClick={handleDelete(uid)}>
-                      <DeleteIcon />
-                    </IconButton>
+                    <ButtonGroup size="large" color="secondary">
+                      <Button variant="contained" onClick={handleIncrement(uid)}>
+                        {'+'}
+                      </Button>
+                      <Button color="primary">{checked[uid]}</Button>
+                      <Button variant="contained" onClick={handleDecrement(uid)}>
+                        {'-'}
+                      </Button>
+                    </ButtonGroup>
                   </ListItemSecondaryAction>
                 </ListItem>
                 <Divider />
@@ -58,11 +64,19 @@ const ActionPanel = ({ type }) => {
           )
         })}
       </List>
+      <Fab variant="extended" color="secondary" aria-label="add" className={classes.fab}>
+        <SaveIcon className={classes.extendedIcon} />
+        {'Save'}
+      </Fab>
     </Card>
   )
 }
 
 const useStyles = makeStyles(theme => ({
+  actionCard: {
+    paddingBottom: 40,
+    minHeight: '100%',
+  },
   cardHeader: {
     color: 'white',
     backgroundColor: theme.palette.secondary.main,
@@ -78,6 +92,17 @@ const useStyles = makeStyles(theme => ({
     display: 'block',
     position: 'absolute',
     backgroundColor: theme.palette.secondary.main,
+  },
+  extendedIcon: {
+    marginRight: theme.spacing(1),
+  },
+  fab: {
+    margin: 0,
+    top: 'auto',
+    right: 20,
+    bottom: 20,
+    left: 'auto',
+    position: 'fixed',
   },
 }))
 

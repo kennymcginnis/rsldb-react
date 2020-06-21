@@ -2,7 +2,10 @@ import React, { useState } from 'react'
 // MUI
 import { makeStyles } from '@material-ui/core/styles'
 import Card from '@material-ui/core/Card'
+import CardHeader from '@material-ui/core/CardHeader'
+import debounce from '@material-ui/core/utils/debounce'
 import FormControl from '@material-ui/core/FormControl'
+import Grid from '@material-ui/core/Grid'
 import IconButton from '@material-ui/core/IconButton'
 import InputAdornment from '@material-ui/core/InputAdornment'
 import InputLabel from '@material-ui/core/InputLabel'
@@ -10,15 +13,12 @@ import OutlinedInput from '@material-ui/core/OutlinedInput'
 // Icons
 import Clear from '@material-ui/icons/Clear'
 // State
-import { useRecoilState } from 'recoil'
+import { useSetRecoilState } from 'recoil'
 import { filtersState } from 'state/atoms'
-import debounce from '@material-ui/core/utils/debounce'
-import Grid from '@material-ui/core/Grid'
-import CardHeader from '@material-ui/core/CardHeader'
 
 const SearchPanel = () => {
   const classes = useStyles()
-  const [filters, setFilters] = useRecoilState(filtersState)
+  const setFilters = useSetRecoilState(filtersState)
 
   const [searched, setSearched] = useState('')
   const handleSearchForChanged = event => {
@@ -32,7 +32,7 @@ const SearchPanel = () => {
     setFilters(previous => ({ ...previous, searched: '' }))
   }
   const setDebouncedSearch = debounce(searched => {
-    setFilters({ ...filters, searched })
+    setFilters(previous => ({ ...previous, searched }))
   }, 1000)
 
   return (

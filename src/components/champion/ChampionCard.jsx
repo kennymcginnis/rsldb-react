@@ -1,4 +1,6 @@
-import React, { useMemo, useRef, useState } from 'react'
+import React, { useMemo } from 'react'
+import { uuid } from 'uuidv4'
+import clsx from 'clsx'
 // MUI
 import { makeStyles } from '@material-ui/core/styles'
 import Button from '@material-ui/core/Button'
@@ -7,15 +9,15 @@ import CardActionArea from '@material-ui/core/CardActionArea'
 import CardActions from '@material-ui/core/CardActions'
 import CardContent from '@material-ui/core/CardContent'
 import CardMedia from '@material-ui/core/CardMedia'
+import Check from '@material-ui/icons/Check'
 import Typography from '@material-ui/core/Typography'
 // State
 import { useRecoilState } from 'recoil'
-import { activeChampionState } from 'state/atoms/index'
+import { selectedState } from 'state/atoms'
+// import { activeChampionState } from 'state/atoms/index'
 import useFilters from 'state/filters'
 // Styles
 import { colors } from 'styles/colors'
-import Check from '@material-ui/icons/Check'
-import { selectedState } from '../../state/atoms'
 
 const ChampionCard = ({ champion }) => {
   const classes = useStyles()
@@ -24,13 +26,27 @@ const ChampionCard = ({ champion }) => {
 
   const [checked, setChecked] = useRecoilState(selectedState)
   const handleClick = uid => () => {
-    const isChecked = !checked[uid]
     setChecked(previous => ({
       ...previous,
-      [uid]: isChecked,
+      [uid]: (checked[uid] || 0) + 1,
     }))
   }
   const { handleFilterTypeOnly } = useFilters().reducers
+
+  const isChecked = checked[champion.uid]
+
+  function renderCheckMarks() {
+    const checkMarks = []
+    for (let i = 0; i < Math.min(isChecked, 3); i++)
+      checkMarks.push(<Check key={uuid()} className={classes.checkBox} style={{ left: i * 36 }} />)
+    checkMarks.push(
+      <div key={uuid()} className={clsx(classes.checkBox, classes.ellipse)}>
+        {isChecked > 3 ? '...' : ''}
+        {isChecked}&nbsp;
+      </div>,
+    )
+    return checkMarks
+  }
 
   return useMemo(
     () => (
@@ -46,11 +62,7 @@ const ChampionCard = ({ champion }) => {
               title={champion.name}
               style={{ borderColor }}
             />
-            {checked[champion.uid] && (
-              <div className={classes.overlay}>
-                <Check className={classes.checkBox} />
-              </div>
-            )}
+            {isChecked > 0 && <div className={classes.overlay}>{renderCheckMarks()}</div>}
           </CardContent>
         </CardActionArea>
         <Button
@@ -76,7 +88,7 @@ const ChampionCard = ({ champion }) => {
         </CardActions>
       </Card>
     ),
-    [champion, checked[champion.uid]],
+    [champion, isChecked],
   )
 }
 
@@ -106,10 +118,16 @@ const useStyles = makeStyles(() => ({
     backgroundColor: '#353434bd',
   },
   checkBox: {
+    position: 'absolute',
     width: '2em',
     height: '2em',
     fontSize: '2rem',
     color: '#6fa2ff',
+  },
+  ellipse: {
+    left: 120,
+    top: 14,
+    textAlign: 'right',
   },
 }))
 

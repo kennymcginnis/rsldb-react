@@ -1,5 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
+
 // MUI
 import AppBar from '@material-ui/core/AppBar'
 import Button from '@material-ui/core/Button'
@@ -13,7 +14,7 @@ import { useRecoilValue } from 'recoil'
 import { authState } from 'state/atoms/index'
 
 const Navbar = () => {
-  const authenticated = useRecoilValue(authState)
+  const { authenticated } = useRecoilValue(authState)
 
   return (
     <AppBar>

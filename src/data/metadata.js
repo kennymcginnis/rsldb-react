@@ -814,3 +814,43 @@ export const MAGIC_AFFINITY_ID = 'RYN1y624x9yL6X9bPYTY'
 export const SPIRIT_AFFINITY_ID = 'W9v8Q3sLIuI3lqyfDh1H'
 export const VOID_AFFINITY_ID = 'XLbuGFJc0sXMVLmAnWKD'
 export const FORCE_AFFINITY_ID = 'dcYXs7No1NW0oIvsGoYj'
+
+export const defaultFilterState = {
+  type: {
+    Rarity: false,
+    Affinity: true,
+    Faction: true,
+    Role: true,
+  },
+  filtered: {
+    HH7lefSp7UN9JXWrXepz: true,
+    s9nWh3XrywUKO4FmAWaf: true,
+    '4UKgV40Fq9i0ySxLqE3f': true,
+    a8KGPwQrfqGKDPzgdJXG: false,
+    a5Hb3kKctPjvjKjonv1M: false,
+    RYN1y624x9yL6X9bPYTY: true,
+    W9v8Q3sLIuI3lqyfDh1H: true,
+    XLbuGFJc0sXMVLmAnWKD: true,
+    dcYXs7No1NW0oIvsGoYj: true,
+    UmUs19ZN3jSDxpVocPAq: true,
+    XoiiwCts8CI5sA3AzzcD: true,
+    anbn7Irv0VFQl66eyFug: true,
+    i8oIRE6k0fiqicvRzrbu: true,
+    JFEUSeX5Yhkeoui8tOCF: true,
+    QhDbVX1E6ZNqszd3hYgu: true,
+    shQlJwnDYtoOrey9ZbuO: true,
+    DV5pSYb5zESuZ58fK0H8: true,
+    NnFZHVPIqmROWeUF6VyY: true,
+    WQLoXtOAt1cKEguCSzVz: true,
+    I4GVXHmlzTVwFinWzfwg: true,
+    xU16oWo1kb34VOYZ3RXW: true,
+    za0EiN50CGRgsIQ3w3Fp: true,
+  },
+  indeterminate: {
+    Rarity: true,
+    Affinity: false,
+    Faction: false,
+    Role: false,
+  },
+  searched: '',
+}

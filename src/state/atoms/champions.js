@@ -1,6 +1,7 @@
 import { atom, selector } from 'recoil'
 import getByPath from 'lodash/get'
 import setByPath from 'lodash/set'
+import { defaultFilterState } from 'data/metadata'
 
 export const activeChampionState = atom({
   key: 'activeChampion',
@@ -24,21 +25,9 @@ export const championsState = atom({
   },
 })
 
-const defaultFilterTypes = state => ({
-  Rarity: state,
-  Affinity: state,
-  Faction: state,
-  Role: state,
-})
-
 export const filtersState = atom({
   key: 'filters',
-  default: {
-    type: defaultFilterTypes(true),
-    filtered: {},
-    indeterminate: defaultFilterTypes(false),
-    searched: '',
-  },
+  default: defaultFilterState,
 })
 
 export const groupingState = atom({

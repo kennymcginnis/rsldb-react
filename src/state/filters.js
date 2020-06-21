@@ -1,33 +1,36 @@
 import { useRecoilState } from 'recoil'
 import { filtersState } from 'state/atoms/champions'
 import useMetadata from 'state/metadata'
-import { createFilterWithState } from 'util/functions'
 
 const useFilters = () => {
   const [localFiltersState, setFiltersState] = useRecoilState(filtersState)
   const { getMetadataState } = useMetadata().reducers
 
   const reducers = {
+    createFilterWithState: (array, state) =>
+      array.reduce((agg, obj) => {
+        agg[obj.uid] = state
+        return agg
+      }, {}),
     toggleIndeterminate: (filtered, filterType, items) => {
       const { type, indeterminate } = localFiltersState
       const allChecked = items.every(item => filtered[item.uid])
       const unchecked = items.every(item => !filtered[item.uid])
-      setFiltersState(previous => ({
-        ...previous,
+      setFiltersState({
+        filtered,
         type: { ...type, [filterType]: allChecked },
         indeterminate: { ...indeterminate, [filterType]: !(allChecked || unchecked) },
-      }))
+      })
     },
     handleTypeToggled: filterType => event => {
       const items = getMetadataState(filterType)
       const { type, filtered } = localFiltersState
-      const updates = createFilterWithState(items, event.target.checked)
-      setFiltersState(previous => ({
-        ...previous,
+      const updates = reducers.createFilterWithState(items, event.target.checked)
+      setFiltersState({
         filtered: { ...filtered, ...updates },
         type: { ...type, [filterType]: event.target.checked },
         indeterminate: false,
-      }))
+      })
     },
     handleFilterToggled: (uid, filterType) => () => {
       const items = getMetadataState(filterType)

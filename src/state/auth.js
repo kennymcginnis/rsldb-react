@@ -1,8 +1,10 @@
 import axios from 'axios'
 import { useRecoilState, useResetRecoilState } from 'recoil'
 import { authState } from 'state/atoms/index'
+import { useHistory } from 'react-router-dom'
 
 const useAuth = () => {
+  const history = useHistory()
   const resetAuthState = useResetRecoilState(authState)
   const [localAuthState, setAuthState] = useRecoilState(authState)
 
