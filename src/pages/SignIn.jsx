@@ -5,7 +5,8 @@ import { Field, Form, FormSpy } from 'react-final-form'
 import { makeStyles } from '@material-ui/core/styles'
 import Grid from '@material-ui/core/Grid'
 // Components
-import { validateEmail, required } from 'components/form/validation'
+import 'components/bootstrap'
+import { required, validateEmail } from 'components/form/validation'
 import FormButton from 'components/form/FormButton'
 import FormFeedback from 'components/form/FormFeedback'
 import RFTextField from 'components/form/RFTextField'
@@ -22,17 +23,17 @@ const SignIn = () => {
     return validateEmail(errors, values)
   }
 
-  const onSubmit = ({ email, password }) => auth.effects.login({ email, password })
+  const onSubmit = ({ email, password }) => auth.effects.signin({ email, password })
 
   return (
     <Grid item xs={12} sm={6} style={{ margin: 'auto' }}>
       <Typography variant="h3" gutterBottom marked="center" align="center">
-        Sign In
+        {'Sign In'}
       </Typography>
       <Typography variant="body2" align="center">
         {'Not a member yet? '}
-        <Link to="/signup" align="center" underline="always">
-          Sign Up here!
+        <Link to="/sign-up" align="center" underline="always">
+          {'Sign up here!'}
         </Link>
       </Typography>
       <Form {...{ onSubmit, validate }} subscription={{ submitting: true }}>
@@ -51,16 +52,16 @@ const SignIn = () => {
               size="large"
             />
             <Field
-              fullWidth
-              size="large"
+              autoComplete="current-password"
               component={RFTextField}
               disabled={submitting}
-              required
-              name="password"
-              autoComplete="current-password"
+              fullWidth
               label="Password"
-              type="password"
               margin="normal"
+              name="password"
+              required
+              size="large"
+              type="password"
             />
             <FormSpy subscription={{ submitError: true }}>
               {({ submitError }) =>
@@ -73,10 +74,10 @@ const SignIn = () => {
             </FormSpy>
             <FormButton
               className={classes.button}
-              disabled={submitting}
-              size="large"
               color="secondary"
+              disabled={submitting}
               fullWidth
+              size="large"
               style={{ width: '50%', left: '25%' }}
             >
               {submitting ? 'In progress…' : 'Sign In'}

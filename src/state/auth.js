@@ -1,6 +1,6 @@
 import axios from 'axios'
 import { useRecoilState, useResetRecoilState } from 'recoil'
-import { authState } from 'state/atoms/index'
+import { authState } from 'state/atoms'
 import { useHistory } from 'react-router-dom'
 
 const useAuth = () => {
@@ -14,7 +14,7 @@ const useAuth = () => {
         ...localAuthState,
         authenticated: true,
       }),
-    loginSucceeded: (state, payload) => {
+    signinSucceeded: (state, payload) => {
       if (payload.length === 0) {
         resetAuthState()
       } else {
@@ -29,7 +29,6 @@ const useAuth = () => {
       }
     },
     setAuthorizationHeader: token => {
-      history.push('/') // eslint-disable-line no-restricted-globals
       reducers.setAuthenticated()
       const FBIdToken = `Bearer ${token}`
       localStorage.setItem('FBIdToken', FBIdToken)
@@ -40,15 +39,21 @@ const useAuth = () => {
   return {
     reducers,
     effects: {
-      login: userData =>
+      signin: userData =>
         axios
           .post('/login', userData)
-          .then(res => reducers.setAuthorizationHeader(res.data.token))
+          .then(res => {
+            history.push('/') // eslint-disable-line no-restricted-globals
+            reducers.setAuthorizationHeader(res.data.token)
+          })
           .catch(err => console.error('login', err)),
       signup: newUserData =>
         axios
           .post('/signup', newUserData)
-          .then(res => reducers.setAuthorizationHeader(res.data.token))
+          .then(res => {
+            history.push('/') // eslint-disable-line no-restricted-globals
+            reducers.setAuthorizationHeader(res.data.token)
+          })
           .catch(err => console.error('signup', err)),
       logout: () => {
         localStorage.removeItem('FBIdToken')

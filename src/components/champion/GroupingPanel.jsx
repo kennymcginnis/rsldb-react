@@ -70,8 +70,7 @@ const GroupingPanel = () => {
 const useStyles = makeStyles(theme => ({
   groupingCard: {
     margin: 0,
-    marginBottom: 10,
-    width: `calc(100% - ${theme.spacing(2)}px)`,
+    width: '100%',
   },
   cardHeader: {
     color: 'white',

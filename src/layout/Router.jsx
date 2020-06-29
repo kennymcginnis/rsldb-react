@@ -7,6 +7,7 @@ import AuthRoute from 'layout/AuthRoute'
 import Champions from 'pages/ChampionsHome'
 import SignIn from 'pages/SignIn'
 import SignUp from 'pages/SignUp'
+import BottomNavigation from './BottomNavigation'
 
 const Router = () => {
   return (
@@ -14,11 +15,12 @@ const Router = () => {
       <Navbar />
       <div className="container">
         <Switch>
-          <Route exact path="/champions" component={Champions} />
-          <AuthRoute exact path="/login" component={SignIn} />
-          <AuthRoute exact path="/signup" component={SignUp} />
+          <Route exact path="/champion-index" component={Champions} />
+          <AuthRoute exact path="/sign-in" component={SignIn} />
+          <AuthRoute exact path="/sign-up" component={SignUp} />
         </Switch>
       </div>
+      <BottomNavigation />
     </BrowserRouter>
   )
 }

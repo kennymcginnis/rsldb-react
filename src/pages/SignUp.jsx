@@ -1,9 +1,9 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 import { Field, Form, FormSpy } from 'react-final-form'
 // MUI
 import { makeStyles } from '@material-ui/core/styles'
 import Grid from '@material-ui/core/Grid'
-import Link from '@material-ui/core/Link'
 // Components
 import 'components/bootstrap'
 import { required, validateEmail } from 'components/form/validation'
@@ -26,24 +26,27 @@ const SignUp = () => {
   return (
     <Grid item xs={12} sm={6} style={{ margin: 'auto' }}>
       <Typography variant="h3" gutterBottom marked="center" align="center">
-        Sign Up
+        {'Sign Up'}
       </Typography>
       <Typography variant="body2" align="center">
-        <Link to="/login" underline="always">
-          Already have an account?
+        {'Already have an account? '}
+        <Link to="/sign-in" underline="always">
+          {'Sign in.'}
         </Link>
       </Typography>
       <Form {...{ onSubmit, validate }} subscription={{ submitting: true }}>
-        {({ onSubmit, submitting }) => (
-          <form {...{ onSubmit }} className={classes.form} noValidate>
+        {({ handleSubmit, submitting }) => (
+          <form onSubmit={handleSubmit} className={classes.form} noValidate>
             <Field
+              autoComplete="handle"
               autoFocus
               component={RFTextField}
-              autoComplete="handle"
               fullWidth
               label="Handle"
+              margin="normal"
               name="handle"
               required
+              size="large"
             />
             <Field
               autoComplete="email"
@@ -54,17 +57,19 @@ const SignUp = () => {
               margin="normal"
               name="email"
               required
+              size="large"
             />
             <Field
-              fullWidth
+              autoComplete="current-password"
               component={RFTextField}
               disabled={submitting || sent}
-              required
-              name="password"
-              autoComplete="current-password"
+              fullWidth
               label="Password"
-              type="password"
               margin="normal"
+              name="password"
+              required
+              size="large"
+              type="password"
             />
             <FormSpy subscription={{ submitError: true }}>
               {({ submitError }) =>
@@ -77,9 +82,10 @@ const SignUp = () => {
             </FormSpy>
             <FormButton
               className={classes.button}
-              disabled={submitting || sent}
               color="secondary"
+              disabled={submitting || sent}
               fullWidth
+              size="large"
               style={{ width: '50%', left: '25%' }}
             >
               {submitting || sent ? 'In progress…' : 'Sign Up'}

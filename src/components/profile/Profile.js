@@ -74,14 +74,14 @@ const Profile = ({
     ) : (
       <Paper className={classes.paper}>
         <Typography variant="body2" align="center">
-          No profile found, please login again
+          No profile found, please sign in again
         </Typography>
         <div className={classes.buttons}>
-          <Button variant="contained" color="primary" component={Link} to="/login">
-            Login
+          <Button variant="contained" color="primary" component={Link} to="/signin">
+            Sign In
           </Button>
           <Button variant="contained" color="secondary" component={Link} to="/signup">
-            Signup
+            Sign Up
           </Button>
         </div>
       </Paper>

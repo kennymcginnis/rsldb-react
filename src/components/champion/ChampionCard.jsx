@@ -14,7 +14,6 @@ import Typography from '@material-ui/core/Typography'
 // State
 import { useRecoilState } from 'recoil'
 import { selectedState } from 'state/atoms'
-// import { activeChampionState } from 'state/atoms/index'
 import useFilters from 'state/filters'
 // Styles
 import { colors } from 'styles/colors'
@@ -35,19 +34,6 @@ const ChampionCard = ({ champion }) => {
 
   const isChecked = checked[champion.uid]
 
-  function renderCheckMarks() {
-    const checkMarks = []
-    for (let i = 0; i < Math.min(isChecked, 3); i++)
-      checkMarks.push(<Check key={uuid()} className={classes.checkBox} style={{ left: i * 36 }} />)
-    checkMarks.push(
-      <div key={uuid()} className={clsx(classes.checkBox, classes.ellipse)}>
-        {isChecked > 3 ? '...' : ''}
-        {isChecked}&nbsp;
-      </div>,
-    )
-    return checkMarks
-  }
-
   return useMemo(
     () => (
       <Card key={champion.uid} className={classes.card} style={{ background: gradient }}>
@@ -62,7 +48,14 @@ const ChampionCard = ({ champion }) => {
               title={champion.name}
               style={{ borderColor }}
             />
-            {isChecked > 0 && <div className={classes.overlay}>{renderCheckMarks()}</div>}
+            {isChecked > 0 && (
+              <div className={classes.overlay}>
+                <Check key={uuid()} className={classes.checkBox} />
+                <div key={uuid()} className={clsx(classes.checkBox, classes.counter)}>
+                  {`(${isChecked}) `}
+                </div>
+              </div>
+            )}
           </CardContent>
         </CardActionArea>
         <Button
@@ -71,7 +64,7 @@ const ChampionCard = ({ champion }) => {
           fullWidth
           onClick={handleFilterTypeOnly('Faction', faction?.uid || '')}
         >
-          {faction?.name || 'TODO'}
+          {faction?.name}
         </Button>
         <CardActions className={classes.cardActions}>
           <Button
@@ -80,10 +73,10 @@ const ChampionCard = ({ champion }) => {
             style={affinity && colors[affinity.name]}
             onClick={handleFilterTypeOnly('Affinity', affinity.uid)}
           >
-            {affinity && affinity.name}
+            {affinity?.name}
           </Button>
-          <Button size="small" color="primary" fullWidth className={classes.bottomButton}>
-            RANK-UP
+          <Button size="small" color="primary" fullWidth>
+            {'RANK - UP'}
           </Button>
         </CardActions>
       </Card>
@@ -95,7 +88,8 @@ const ChampionCard = ({ champion }) => {
 const useStyles = makeStyles(() => ({
   card: {
     width: 185,
-    margin: '0.5vw',
+    marginLeft: 8,
+    marginBottom: 8,
   },
   name: {
     overflow: 'hidden',
@@ -124,8 +118,8 @@ const useStyles = makeStyles(() => ({
     fontSize: '2rem',
     color: '#6fa2ff',
   },
-  ellipse: {
-    left: 120,
+  counter: {
+    left: 110,
     top: 14,
     textAlign: 'right',
   },

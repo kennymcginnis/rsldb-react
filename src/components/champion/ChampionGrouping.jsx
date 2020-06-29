@@ -9,22 +9,22 @@ import ExpansionPanel from 'components/champion/ExpansionPanel'
 const ChampionGrouping = ({ group, path }) => {
   const classes = useStyles()
 
-  return group.name === 'Champions' ? (
+  return (
     <Grid item container direction="row" className={classes.groupingRoot}>
-      {<ExpansionPanel key="ep-champions" element={group} path="champions" />}
-    </Grid>
-  ) : (
-    <Grid item container direction="row" className={classes.groupingRoot}>
-      {group.map(element =>
-        element.children ? (
-          <ExpansionPanel
-            key={`ep-${path}-${element.name}`}
-            element={element}
-            path={`${path}.${element.name}`}
-          />
-        ) : (
-          <ChampionCard key={element.uid} champion={element} />
-        ),
+      {group.name === 'Champions' ? (
+        <ExpansionPanel key="ep-champions" element={group} path="champions" />
+      ) : (
+        group.map((element, index) =>
+          element.children ? (
+            <ExpansionPanel
+              key={`ep-${path}-${element.name}`}
+              element={element}
+              path={`${path}.${element.name}`}
+            />
+          ) : (
+            <ChampionCard key={element.uid} champion={element} />
+          ),
+        )
       )}
     </Grid>
   )
@@ -32,8 +32,9 @@ const ChampionGrouping = ({ group, path }) => {
 
 const useStyles = makeStyles(() => ({
   groupingRoot: {
-    width: 'calc(100% - 16px)',
+    width: '100%',
   },
+  expansionPanel: {},
 }))
 
 export default ChampionGrouping

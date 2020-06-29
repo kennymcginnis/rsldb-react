@@ -2,6 +2,17 @@ import { unstable_createMuiStrictModeTheme } from '@material-ui/core/styles'
 import { green, grey, red } from '@material-ui/core/colors'
 
 const rawTheme = unstable_createMuiStrictModeTheme({
+  overrides: {
+    MuiExpansionPanel: {
+      root: {
+        MuiExpanded: {
+          '&:last-child': {
+            marginBottom: 8,
+          },
+        },
+      },
+    },
+  },
   '@global': {
     body: {
       backgroundImage: `url(%PUBLIC_URL%/public/raid-header.jpg)`,

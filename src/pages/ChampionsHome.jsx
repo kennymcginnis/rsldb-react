@@ -21,14 +21,13 @@ import SearchPanel from 'components/champion/SearchPanel'
 import Typography from 'components/Typography'
 // State
 import { useRecoilValue } from 'recoil'
-import { activeChampionState } from 'state/atoms'
+import { activeChampionState, authState } from 'state/atoms'
 import { championsDisplay } from 'state/atoms'
-import Hidden from '@material-ui/core/Hidden'
 
 const ChampionsHome = () => {
   const classes = useStyles()
-
   const group = useRecoilValue(championsDisplay)
+  const { authenticated } = useRecoilValue(authState)
   const { activeChampion } = useRecoilValue(activeChampionState)
 
   const [groupFilter, setGroupFilterToggle] = useState([])
@@ -50,19 +49,6 @@ const ChampionsHome = () => {
             className={classes.headerRow}
             container
             direction="row"
-            justify="center"
-          >
-            <Hidden lgUp>
-              <Typography variant="h4" marked="center" align="center">
-                Champion Index
-              </Typography>
-            </Hidden>
-          </Grid>
-          <Grid
-            key="subheader-row"
-            className={classes.headerRow}
-            container
-            direction="row"
             justify="space-between"
           >
             <Grid key="group-filter-col" className={classes.column}>
@@ -74,45 +60,40 @@ const ChampionsHome = () => {
               >
                 <ToggleButton key="ToggleButton-Group" value="Group" aria-label="Group">
                   <BsListNested className={classes.icons} style={{ fontSize: '1.4rem' }} />
-                  <Typography style={{ padding: 8 }}>Group</Typography>
+                  <Typography className={classes.buttonText}>{'Group'}</Typography>
                 </ToggleButton>
                 <ToggleButton key="ToggleButton-Search" value="Search" aria-label="Search">
                   <SearchIcon className={classes.icons} />
-                  <Typography style={{ padding: 8 }}>Search</Typography>
+                  <Typography className={classes.buttonText}>{'Search'}</Typography>
                 </ToggleButton>
                 <ToggleButton key="ToggleButton-Filter" value="Filter" aria-label="Filter">
                   <FiFilter className={classes.icons} style={{ fontSize: '1.2rem' }} />
-                  <Typography style={{ padding: 8 }}>Filter</Typography>
+                  <Typography className={classes.buttonText}>{'Filter'}</Typography>
                 </ToggleButton>
               </ToggleButtonGroup>
             </Grid>
-            <Hidden mdDown>
-              <Grid key="title-column" className={classes.column}>
-                <Typography variant="h4" marked="center" align="center">
-                  Champion Index
-                </Typography>
-              </Grid>
-            </Hidden>
             <Grid key="action-selector" className={classes.column}>
-              <ToggleButtonGroup
-                exclusive
-                value={pullConsume}
-                aria-label="pull or consume champions"
-                className={classes.buttonGroup}
-                onChange={handlePullConsumeToggle}
-              >
-                <ToggleButton key="Toggle-Pull" value="pull" aria-label="Pull Champions">
-                  <AddCircleOutlineIcon color="secondary" />
-                  <Typography style={{ padding: 8 }}>Pull Shards</Typography>
-                </ToggleButton>
-                <ToggleButton key="Toggle-Consume" value="consume" aria-label="Consume Champions">
-                  <RemoveCircleOutlineIcon color="secondary" />
-                  <Typography style={{ padding: 8 }}>Consume</Typography>
-                </ToggleButton>
-              </ToggleButtonGroup>
+              {authenticated && (
+                <ToggleButtonGroup
+                  exclusive
+                  value={pullConsume}
+                  aria-label="pull or consume champions"
+                  className={classes.buttonGroup}
+                  onChange={handlePullConsumeToggle}
+                >
+                  <ToggleButton key="Toggle-Pull" value="pull" aria-label="Pull Champions">
+                    <AddCircleOutlineIcon color="secondary" />
+                    <Typography style={{ padding: 8 }}>Pull Shards</Typography>
+                  </ToggleButton>
+                  <ToggleButton key="Toggle-Consume" value="consume" aria-label="Consume Champions">
+                    <RemoveCircleOutlineIcon color="secondary" />
+                    <Typography style={{ padding: 8 }}>Consume</Typography>
+                  </ToggleButton>
+                </ToggleButtonGroup>
+              )}
             </Grid>
           </Grid>
-          <Grid key="main-content-row" container direction="row">
+          <Grid key="main-content-row" container direction="row" spacing={1}>
             {groupFilter.length > 0 && (
               <Grid key="filter-column" className={classes.column} {...small}>
                 {groupFilter.includes('Group') && <GroupingPanel />}
@@ -160,6 +141,9 @@ const useStyles = makeStyles(theme => ({
   },
   button: {
     width: 120,
+  },
+  buttonText: {
+    padding: 8,
   },
   icons: {
     color: theme.palette.secondary.main,
